@@ -12,8 +12,7 @@ namespace Engine.ViewModel.GameModes
     class MainPhase : UIMode
     {
         public Player CurrentPlayer { get; set; }
-
-        override public bool ShowMovement => Destinations.Any();
+        
         override public bool ShowBuildResearchStation =>
             CurrentPlayer.Hand.Any(pc => pc.Name == CurrentPlayer.Location.Name) && !CurrentPlayer.Location.ResearchStation;
 
@@ -74,30 +73,22 @@ namespace Engine.ViewModel.GameModes
                 OnPropertyChanged(nameof(ShowVaccinate));
             }
         }
-
-        public List<City> Destinations;
+        
 
         public MainPhase(GameSession game, Player player) : base(game)
         {
             CurrentPlayer = player;
-            Destinations = CurrentPlayer.GetDestinations();
             UpdateFlags();
         }
 
         public override void SwitchPlayer(Player player)
         {
             CurrentPlayer = player;
-            Destinations = CurrentPlayer.GetDestinations();
             UpdateFlags();
         }
 
         public override void UpdateFlags()
         {
-            Game.DeselectAll();
-            foreach (City city in Destinations)
-            {
-                city.Selectable = true;
-            }
 
             OnPropertyChanged(nameof(ShowMovement));
             OnPropertyChanged(nameof(ShowBuildResearchStation));
@@ -114,17 +105,6 @@ namespace Engine.ViewModel.GameModes
             //OnPropertyChanged(nameof());
         }
 
-        override public void ChooseCity(string name)
-        {
-            City city = Game.Cities.FirstOrDefault(c => c.Name == name);
-            if (city == null)
-            {
-                throw new ArgumentException();
-            }
-            CurrentPlayer.Move(city);
-            Destinations = CurrentPlayer.GetDestinations();
-            UpdateFlags();
-        }
 
         public override void Treat()
         {

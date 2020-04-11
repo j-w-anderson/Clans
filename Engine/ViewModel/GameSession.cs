@@ -19,8 +19,7 @@ namespace Engine
     [Serializable]
     public class GameSession : BaseNotificationClass
     {
-
-        public ObservableCollection<City> Cities;
+        
         public ObservableCollection<Player> Players { get; set; } = new ObservableCollection<Player>();
         public ObservableCollection<Path> Paths { get; set; }
         public ObservableCollection<Disease> Diseases { get; set; } = new ObservableCollection<Disease>();
@@ -73,19 +72,14 @@ namespace Engine
         {
             CurrentMode = new UIMode(this);
             OutbreakCount = 0;
-
-            Cities = new ObservableCollection<City>(GameData.GetCities());
-            Paths = GameData.GetPaths(Cities);
-            PlayerDeck = GameData.BuildPlayerDeck(Cities);
+            
+            PlayerDeck = GameData.BuildResourceDeck();
             AvailableEvents = GameData.GetAvailableEvents();
-            InfectionDeck = GameData.BuildInfectionDeck(Cities);
-
-            City Start = Cities.First(c => c.Name == "Atlanta");
-            Start.ResearchStation = true;
-            Players.Add(new Generalist(this, "Cyrus", "Cyan", Start));
-            Players.Add(new Player(this, "Will", "White", Start));
-            Players.Add(new Player(this, "Piper", "Pink", Start));
-            Players.Add(new Player(this, "Bryan", "Brown", Start));
+            
+            Players.Add(new Player(this, "Cyrus", "Cyan"));
+            Players.Add(new Player(this, "Will", "White"));
+            Players.Add(new Player(this, "Piper", "Pink"));
+            Players.Add(new Player(this, "Bryan", "Brown"));
 
             InitalSetup();
 
@@ -183,14 +177,7 @@ namespace Engine
                     stream.Close();
             }
         }
-
-        public void DeselectAll()
-        {
-            foreach (City city in Cities)
-            {
-                city.Selectable = false;
-            }
-        }
+        
 
         internal void Treat(City location, ELEMENT color, bool all = false)
         {
@@ -222,15 +209,6 @@ namespace Engine
             else
             {
                 card = (InfectionCard)InfectionDeck.Draw();
-            }
-            City location = Cities.FirstOrDefault(c => c.Name == card.Name);
-            if (location.AddCubes(1)) // Add cube and check for outbreak
-            {
-                TriggerOutbreak(location, location.Color, new List<City>());
-            }
-            else
-            {
-                Diseases[(int)location.Color].CubesInSupply -= 1;
             }
             InfectionDeck.Discard(card);
         }

@@ -14,7 +14,6 @@ namespace Engine
 
         public SelectPlayer(GameSession game) : base(game)
         {
-            Game.DeselectAll();
         }
 
 
@@ -33,17 +32,10 @@ namespace Engine
 
         public SelectCity(GameSession game) : base(game)
         {
-            Game.DeselectAll();
-            foreach (City city in Game.Cities)
-            {
-                city.Selectable = true;
-            }
         }
 
         override public void ChooseCity(string name)
         {
-            City chosen = Game.Cities.FirstOrDefault(p => p.Name == name);
-            SendCity(this, chosen);
         }
     }
 }

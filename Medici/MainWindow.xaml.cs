@@ -30,8 +30,7 @@ namespace Medici
             gameSession = new GameSession();
 
             DataContext = gameSession;
-
-            Cities_IC.ItemsSource = gameSession.Cities;
+            
             Pawns_IC.ItemsSource = gameSession.Players;
             Paths_IC.ItemsSource = gameSession.Paths;
             Players_IC.ItemsSource = gameSession.Players;

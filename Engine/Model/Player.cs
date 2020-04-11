@@ -71,12 +71,11 @@ namespace Engine
         public ObservableCollection<PlayerCard> Hand { get; set; } = new ObservableCollection<PlayerCard>();
         public int VaccineDoses { get; internal set; }
 
-        public Player(GameSession game, string name, string color, City location)
+        public Player(GameSession game, string name, string color)
         {
             Game = game;
             Name = name;
             Color = color;
-            Location = location;
             CardsToCure = 5;
         }
 
@@ -94,22 +93,7 @@ namespace Engine
             }
             Game.EndTurn();
         }
-
-        public List<City> GetDestinations()
-        {
-            // Compile a list of cities to which this player can travel directly
-
-            if (Hand.Any(pc => pc.Name == Location.Name))
-            {
-                return Game.Cities.Where(pc => pc.Name != Location.Name).ToList<City>();
-            }
-            else
-            {
-                List<City> destinations = Location.Adjacent.ToList();
-                destinations.AddRange(Hand.Where(pc => pc.GetType() == typeof(CityCard)).Select(cc => (cc as CityCard).City));
-                return destinations;
-            }
-        }
+        
 
         internal void Draw(Deck playerDeck)
         {

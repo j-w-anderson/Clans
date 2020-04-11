@@ -106,13 +106,9 @@ namespace PandemicLegacy
             return result;
         }
 
-        public static Deck BuildPlayerDeck(ObservableCollection<City> cities)
+        public static Deck BuildResourceDeck()
         {
             ObservableCollection<Card> cards = new ObservableCollection<Card>();
-            foreach (City city in cities)
-            {
-                cards.Add(new CityCard(city));
-            }
             return new Deck(cards);
         }
 
