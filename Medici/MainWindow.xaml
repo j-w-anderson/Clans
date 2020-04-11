@@ -24,7 +24,7 @@
         <Style BasedOn="{StaticResource CharacterCard}"
                TargetType="Label" 
                x:Key="CharacterField">
-            <Setter Property="FontSize" Value="8"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Padding" Value="1"/>
             <Setter Property="Foreground" Value="Wheat"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -43,14 +43,14 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="230"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ItemsControl Name="Players_IC"
                       Grid.Column="0" Grid.Row="0">
+
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel/>
@@ -58,7 +58,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid Margin="4" Height="179">
+                    <Grid Margin="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
@@ -72,12 +72,12 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0" Grid.Row="0" Background="SandyBrown" MouseUp="Player_Click" Tag="{Binding Name}">
+
+                        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="SandyBrown" MouseUp="Player_Click" Tag="{Binding Name}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="AUTO"/>
+                                <ColumnDefinition Width="30"/>
                                 <ColumnDefinition Width="AUTO"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="AUTO"/>
                             </Grid.ColumnDefinitions>
                             <Ellipse Margin="3" MinHeight="10" MinWidth="10" Stretch="UniformToFill" Fill="{Binding Color}"
                                      Grid.Column="0"/>
@@ -91,73 +91,37 @@
                             <Label Content="{Binding Name}" Foreground="Black" Style="{StaticResource CharacterCard}" 
                                    BorderBrush="Transparent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
                                    Grid.Column="2"/>
-                            <Label Visibility="{Binding Military,Converter={StaticResource ButtonToVisibility}}" 
-                                   Content="M" 
-                                   Width="20"
-                                   Foreground="Olive" FontSize="15" 
-                                   HorizontalAlignment="Right"
-                                   Padding="0"
-                                   FontWeight="ExtraBlack"
-                                     Grid.Column="3"/>
                         </Grid>
-                        <Label Content="{Binding Money}" Style="{StaticResource CharacterCard}"
+                        <Label Content="Florins" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="1"/>
-                        <Label Content="{Binding Levels[0]}" Style="{StaticResource CharacterCard}"
-                               Grid.Column="0" Grid.Row="2"/>
-                        <Label Content="{Binding Levels[1]}" Style="{StaticResource CharacterCard}"
-                               Grid.Column="0" Grid.Row="3"/>
-                        <Label Content="{Binding Levels[2]}" Style="{StaticResource CharacterCard}"
-                               Grid.Column="0" Grid.Row="4"/>
-                        <Label Content="{Binding Levels[3]}" Style="{StaticResource CharacterCard}"
-                               Grid.Column="0" Grid.Row="5"/>
-                        <Label Content="{Binding Levels[4]}" Style="{StaticResource CharacterCard}"
-                               Grid.Column="0" Grid.Row="6"/>
+                        <Button Content="{Binding Money}" Tag="{Binding Name}" 
+                                Click="Money_Up" 
+                                Grid.Column="1" Grid.Row="1"/>
 
-                        <Label Content="Florins:" Style="{StaticResource CharacterField}"
-                               Grid.Column="0" Grid.Row="1"/>
-                        <Label Content="Chili Level:" Style="{StaticResource CharacterField}"
+                        <Label Content="Chili" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="2"/>
-                        <Label Content="Indigo Level:" Style="{StaticResource CharacterField}"
+                        <Button Content="{Binding Levels[0]}" Click="Chili_Up" Tag="{Binding Name}"
+                               Grid.Column="1" Grid.Row="2"/>
+                        
+                        <Label Content="Indigo" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="3"/>
-                        <Label Content="Pepper Level:" Style="{StaticResource CharacterField}"
+                        <Button Content="{Binding Levels[1]}" Click="Indigo_Up" Tag="{Binding Name}"
+                               Grid.Column="1" Grid.Row="3"/>
+                        
+                        <Label Content="Pepper" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="4"/>
-                        <Label Content="Saffron Level:" Style="{StaticResource CharacterField}"
+                        <Button Content="{Binding Levels[2]}" Click="Pepper_Up" Tag="{Binding Name}"
+                               Grid.Column="1" Grid.Row="4"/>
+                        
+                        <Label Content="Saffron" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="5"/>
-                        <Label Content="Tea Level:" Style="{StaticResource CharacterField}"
+                        <Button Content="{Binding Levels[3]}" Click="Saffron_Up" Tag="{Binding Name}"
+                               Grid.Column="1" Grid.Row="5"/>
+                        
+                        <Label Content="Tea" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="6"/>
-                        <ScrollViewer 
-                                        BorderBrush="Bisque"
-                                        BorderThickness="0.5"
-                                        Grid.RowSpan="8"
-                                        Grid.Column="1" Grid.Row="0">
-                            <ItemsControl Name="Cards_IC"
-                                        ItemsSource="{Binding Hand}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="1" Background="White">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="20.3"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            <Label Content="{Binding Name}"
-                                               MouseUp="Card_Click"
-                                               HorizontalAlignment="Stretch"
-                                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                               Padding="0" Height="20" FontSize="12" Margin="1"
-                                               Background="{Binding Color,Converter={StaticResource CityCardColorConverter}}"
-                                               Foreground="{Binding Color,Converter={StaticResource CityCardFontColorConverter}}"
-                                               FontWeight="ExtraBold"
-                                               Grid.Row="0"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
+                        <Button Content="{Binding Levels[4]}" Click="Tea_Up" Tag="{Binding Name}"
+                               Grid.Column="1" Grid.Row="6"/>
 
                     </Grid>
                 </DataTemplate>

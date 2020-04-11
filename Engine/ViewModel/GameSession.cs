@@ -116,10 +116,37 @@ namespace Engine
                     stream.Close();
             }
         }
-        
 
+        public void Adjust(string name, string field, int v)
+        {
+            Player player = Players.FirstOrDefault(p => p.Name == name);
+            if (player == null) { return; }
+            switch (field)
+            {
+                case "Money":
+                    player.Money += v;
+                    break;
+                case "Chili":
+                    player.Levels[(int)RESOURCE.CHILI] -= v;
+                    break;
+                case "Indigo":
+                    player.Levels[(int)RESOURCE.INDIGO] -= v;
+                    break;
+                case "Pepper":
+                    player.Levels[(int)RESOURCE.PEPPER] -= v;
+                    break;
+                case "Saffron":
+                    player.Levels[(int)RESOURCE.SAFFRON] -= v;
+                    break;
+                case "Tea":
+                    player.Levels[(int)RESOURCE.TEA] -= v;
+                    break;
+                default:
+                    break;
+            }
 
-        
+        }
+
         internal void EndTurn()
         {
             // Draw phase
