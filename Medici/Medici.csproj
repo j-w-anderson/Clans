@@ -164,6 +164,7 @@
     <Content Include="Images\Events\Event--Vaccine.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\MediciBoard.png" />
     <Resource Include="Images\Icons\Icon--Trade.png" />
     <Resource Include="Images\Icons\Icon--EndTurn.png" />
     <Resource Include="Images\Icons\Icon--House.png" />

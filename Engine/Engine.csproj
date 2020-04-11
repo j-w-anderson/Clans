@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EE88F21C-F593-4A90-8374-328440BA1046}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Engine</RootNamespace>
+    <AssemblyName>Engine</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model\City.cs" />
+    <Compile Include="Model\CitySticker.cs" />
+    <Compile Include="Model\Deck.cs" />
+    <Compile Include="Model\EventCards.cs" />
+    <Compile Include="Model\LegacyDeck.cs" />
+    <Compile Include="Model\Roles\OpExpert.cs" />
+    <Compile Include="Model\Roles\Scientist.cs" />
+    <Compile Include="Model\Roles\Medic.cs" />
+    <Compile Include="Model\Roles\Generalist.cs" />
+    <Compile Include="Model\Trade.cs" />
+    <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\ItemQuantity.cs" />
+    <Compile Include="Model\Path.cs" />
+    <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\Cards.cs" />
+    <Compile Include="Model\Supply.cs" />
+    <Compile Include="Utils\BaseNotificationClass.cs" />
+    <Compile Include="Utils\Enums.cs" />
+    <Compile Include="Model\GameData.cs" />
+    <Compile Include="Utils\Random.cs" />
+    <Compile Include="Model\Disease.cs" />
+    <Compile Include="ViewModel\GameModes\MainPhase.cs" />
+    <Compile Include="ViewModel\GameModes\SelectCard.cs" />
+    <Compile Include="ViewModel\GameModes\SelectEventCard.cs" />
+    <Compile Include="ViewModel\GameModes\SelectPlayer.cs" />
+    <Compile Include="ViewModel\GameSession.cs" />
+    <Compile Include="ViewModel\GameModes\UIMode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

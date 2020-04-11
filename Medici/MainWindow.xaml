@@ -57,10 +57,10 @@
             <ColumnDefinition Width="AUTO"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ItemsControl Name="Paths_IC" Width="1200" Height="758"
+        <ItemsControl Name="Paths_IC" Width="750" Height="750"
                       Grid.Column="0">
             <ItemsControl.Background>
-                <ImageBrush ImageSource="Images/Board.jpg"/>
+                <ImageBrush ImageSource="Images/MediciBoard.png"/>
             </ItemsControl.Background>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
