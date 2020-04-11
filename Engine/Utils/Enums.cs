@@ -89,5 +89,15 @@ namespace Engine.Utils
         MILITARY
     }
 
+    public enum RESOURCE
+    {
+        CHILI,
+        INDIGO,
+        PEPPER,
+        SAFFRON,
+        TEA,
+        GOLD
+    }
+
 }
 

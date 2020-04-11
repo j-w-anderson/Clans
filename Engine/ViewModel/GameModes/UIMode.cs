@@ -86,20 +86,10 @@ namespace Engine
         public void SelectCard(string name)
         {
             OldMode = Game.CurrentMode;
-            HasCard = Game.Players.FirstOrDefault(p => p.Hand.Count(c => c.Name == name) == 1);
-            Target = HasCard.Hand.FirstOrDefault(c => c.Name == name);
-            if (Target.HasEffect)
-            {
-                Target.Activate(Game, HasCard);
-            }
+            HasCard = Game.Players.FirstOrDefault(p => p.Hold.Count(c => c.Name == name) == 1);
             return;
         }
-
-        public void FinishCard(Player holder, Card card)
-        {
-            holder.Discard(Game.PlayerDeck, card);
-        }
-
+        
         virtual public void Treat() { return; }
         virtual public void Build(string tag) { return; }
         virtual public void Trade() { return; }

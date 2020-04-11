@@ -25,17 +25,4 @@ namespace Engine
     }
 
 
-    public class SelectCity : UIMode
-    {
-        public event CityHandler SendCity;
-        public delegate void CityHandler(SelectCity sp, City c);
-
-        public SelectCity(GameSession game) : base(game)
-        {
-        }
-
-        override public void ChooseCity(string name)
-        {
-        }
-    }
 }

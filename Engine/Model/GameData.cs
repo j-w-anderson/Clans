@@ -109,34 +109,18 @@ namespace PandemicLegacy
         public static Deck BuildResourceDeck()
         {
             ObservableCollection<Card> cards = new ObservableCollection<Card>();
-            return new Deck(cards);
-        }
-
-        public static EpidemicCard GetEpidemicCard()
-        {
-            return new EpidemicCard();
-        }
-
-        internal static Deck BuildInfectionDeck(ObservableCollection<City> cities)
-        {
-            ObservableCollection<Card> cards = new ObservableCollection<Card>();
-            foreach (City city in cities)
+            List<RESOURCE> resources = new List<RESOURCE> { RESOURCE.TEA, RESOURCE.CHILI, RESOURCE.INDIGO, RESOURCE.PEPPER, RESOURCE.SAFFRON };
+            List<int> values = new List<int> { 0, 1, 2, 3, 4, 5, 5 };
+            foreach(RESOURCE r in resources)
             {
-                cards.Add(new InfectionCard(city));
+                foreach(int v in values)
+                {
+                    cards.Add(new Card(r, v));
+                }
             }
+
             return new Deck(cards);
         }
 
-        public static ObservableCollection<EventCard> GetAvailableEvents()
-        {
-            return new ObservableCollection<EventCard>() { new Airlift(),
-                                                           new BorrowedTime(),
-                                                           new Forecast(),
-                                                           new GovernmentGrant(),
-                                                           new NewAssignment(),
-                                                           new OneQuietNight(),
-                                                           new RemoteTreatment(),
-                                                           new ResilientPopulation() };
-        }
     }
 }

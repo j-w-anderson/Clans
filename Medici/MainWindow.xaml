@@ -9,20 +9,9 @@
         WindowState="Maximized"
         Height="785" Width="1500" HorizontalAlignment="Center" VerticalAlignment="Center">
     <Window.Resources>
-        <local:CityDotColorConverter x:Key="CityDotColorConverter"/>
         <local:CityCardColorConverter x:Key="CityCardColorConverter"/>
         <local:CityCardFontColorConverter x:Key="CityCardFontColorConverter"/>
-        <local:PanicLevelColorConverter x:Key="PanicLevelColorConverter"/>
-        <local:PanicLevelNumberConverter x:Key="PanicLevelNumberConverter"/>
-        <local:PanicLevelImageConverter x:Key="PanicLevelImageConverter"/>
         <BooleanToVisibilityConverter x:Key="ButtonToVisibility"/>
-        <local:CityObjectToColor x:Key="CityObjectToColor"/>
-        <local:CityObjectToFontColor x:Key="CityObjectToFontColor"/>
-        <local:CubeCountToOutlineColor x:Key="CubeCountToOutlineColor"/>
-        <local:OutbreakCountXConverter x:Key="OutbreakCountXConverter"/>
-        <local:OutbreakCountYConverter x:Key="OutbreakCountYConverter"/>
-        <local:InfectionTrackXConverter x:Key="InfectionTrackXConverter"/>
-        <local:CurrentPlayerConverter x:Key="CurrentPlayerConverter"/>
 
         <Style TargetType="Label" x:Key="CharacterCard">
             <Setter Property="FontSize" Value="15"/>
@@ -54,437 +43,14 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="AUTO"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ItemsControl Name="Paths_IC" Width="750" Height="750"
-                      Grid.Column="0">
-            <ItemsControl.Background>
-                <ImageBrush ImageSource="Images/MediciBoard.png"/>
-            </ItemsControl.Background>
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RenderTransform>
-                            <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
-                        </Grid.RenderTransform>
-                        <Rectangle Visibility="{Binding Roadblock, Converter={StaticResource ButtonToVisibility}}"
-                                   Width="25" Height="10" Fill="Red" 
-                                   Stroke="Black" StrokeThickness="2" RenderTransformOrigin="0.5,0.5">
-                            <Rectangle.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform Angle="{Binding Rotation}"/>
-                                    <TranslateTransform X="-12.5" Y="-5"/>
-                                </TransformGroup>
-                            </Rectangle.RenderTransform>
-                        </Rectangle>
-                        <Rectangle Visibility="{Binding Selectable, Converter={StaticResource ButtonToVisibility}}"
-                                   Width="25" Height="10" Fill="Transparent" StrokeDashArray="4 4"
-                                   Stroke="White" StrokeThickness="0.5" RenderTransformOrigin="0.5,0.5">
-                            <Rectangle.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform Angle="{Binding Rotation}"/>
-                                    <TranslateTransform X="-12.5" Y="-5"/>
-                                </TransformGroup>
-                            </Rectangle.RenderTransform>
-                        </Rectangle>
-                    </Grid>
-
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <ItemsControl Name="Cities_IC" Width="1200" Height="758"
-                      Grid.Column="0">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border>
-                        <Border.RenderTransform>
-                            <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
-                        </Border.RenderTransform>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="12"/>
-                                <RowDefinition Height="12"/>
-                                <RowDefinition Height="12"/>
-                                <RowDefinition Height="AUTO"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="12"/>
-                                <ColumnDefinition Width="12"/>
-                                <ColumnDefinition Width="12"/>
-                                <ColumnDefinition Width="12"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Label Content="{Binding Name}"
-                                   HorizontalContentAlignment="Center"
-                                   FontSize="9"
-                                   FontWeight="Bold"
-                                   Padding="0"
-                                   Foreground="White"
-                                   Grid.ColumnSpan="4"
-                                   Grid.Column="0" Grid.Row="0"/>
-                            <Ellipse Width="20" Height="20" 
-                                     Fill="{Binding Color, Converter={StaticResource CityDotColorConverter}}"
-                                     Grid.RowSpan="2" Grid.ColumnSpan="2"
-                                     Grid.Column="1" Grid.Row="1"/>
-                            <Button Visibility="{Binding Selectable, Converter={StaticResource ButtonToVisibility}}"
-                                    Click="CityDot_Click"
-                                     Tag="{Binding Name}"
-                                     Width="25" Height="25" Background="Transparent" BorderBrush="White" 
-                                     BorderThickness="2"
-                                     Grid.RowSpan="2" Grid.ColumnSpan="2"
-                                     Grid.Column="1" Grid.Row="1"/>
-                            <Image Source="{Binding Status, Converter={StaticResource PanicLevelImageConverter}}"
-                                   Width="10" Height="10"
-                                   Grid.Column="3" Grid.Row="1" Margin="2,0,0,0"/>
-                            <Border Visibility="{Binding ResearchStation, Converter={StaticResource ButtonToVisibility}}"
-                                    Margin="1" HorizontalAlignment="Center"
-                                    Grid.Column="0" Grid.Row="1">
-                                <Polygon Points="5,0,10,5,10,10,0,10,0,5"
-                                         Fill="White" Stroke="Black"
-                                         Stretch="Fill"/>
-                            </Border>
-                            <Border Visibility="{Binding MilitaryBase, Converter={StaticResource ButtonToVisibility}}"
-                                    Margin="1" HorizontalAlignment="Center"
-                                    Grid.Column="0" Grid.Row="2">
-                                <Polygon Points="5,0,10,5,10,10,0,10,0,5"
-                                         Fill="DarkOliveGreen" Stroke="Black"
-                                         Stretch="Fill"/>
-                            </Border>
-                            <Border Visibility="{Binding VaccineFactory, Converter={StaticResource ButtonToVisibility}}"
-                                    Margin="1" HorizontalAlignment="Center"
-                                    Grid.Column="3" Grid.Row="2">
-                                <Polygon Points="5,0,10,5,10,10,0,10,0,5"
-                                         Fill="Orange" Stroke="Black"
-                                         Stretch="Fill"/>
-                            </Border>
-
-                            <ItemsControl Name="Items_IC"
-                                          ItemsSource="{Binding Items}"
-                                          Grid.ColumnSpan="4"
-                                          Grid.Column="0" Grid.Row="3">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel HorizontalAlignment="Center"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <!--
-                                                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"-->
-                                            <Label Padding="0" Height="15" Width="15" FontSize="10" Margin="1"
-                                                   HorizontalAlignment="Center"
-                                                   HorizontalContentAlignment="Center"
-                                                   Foreground="{Binding Element,Converter={StaticResource CityObjectToFontColor}}"
-                                                   Background="{Binding Element,Converter={StaticResource CityDotColorConverter}}"
-                                                   BorderBrush="{Binding Count,Converter={StaticResource CubeCountToOutlineColor}}"
-                                                   BorderThickness="1"
-                                                   Visibility="{Binding Any,Converter={StaticResource ButtonToVisibility}}"
-                                                   Content="{Binding Count}"  FontWeight="ExtraBold"/>
-                                            <Rectangle Visibility="{Binding Selectable, Converter={StaticResource ButtonToVisibility}}"
-                                                       Height="17" Width="17"
-                                                       Stroke="White" StrokeThickness="1" StrokeDashArray="2 2"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <ItemsControl Name="Pawns_IC" Width="1200" Height="758"
-                      Grid.Column="0" IsHitTestVisible="False">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RenderTransform>
-                            <TranslateTransform X="{Binding Location.X}" Y="{Binding Location.Y}"/>
-                        </Grid.RenderTransform>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="12"/>
-                            <RowDefinition Height="12"/>
-                            <RowDefinition Height="12"/>
-                            <RowDefinition Height="12"/>
-                            <RowDefinition Height="12"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition Width="12"/>
-                        </Grid.ColumnDefinitions>
-                        <Ellipse Width="10" Height="10" Fill="{Binding Color}"
-                                     Grid.Row="{Binding GridRow}" Grid.Column="{Binding GridCol}"/>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Canvas Width="1200" Height="758" Grid.Column="0">
-
-            <Rectangle Fill="Red" 
-                       Height="30" Stroke="Black" Width="30" 
-                       Canvas.Left="{Binding OutbreakCount, Converter={StaticResource OutbreakCountXConverter}}" 
-                       Canvas.Top="{Binding OutbreakCount, Converter={StaticResource OutbreakCountYConverter}}"
-                       RadiusY="10" RadiusX="10">
-                <Rectangle.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="45"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Rectangle.RenderTransform>
-            </Rectangle>
-            <Ellipse Fill="Green" 
-                     Stroke="White" StrokeThickness="2"
-                     Canvas.Top="139"
-                     Canvas.Left="{Binding InfectionTrack, Converter={StaticResource InfectionTrackXConverter}}"
-                     Height="30"  Width="30" />
-
-            <ScrollViewer BorderBrush="LightGreen"
-                          BorderThickness="0.5" 
-                          Height="100" Width="140" Canvas.Left="855" Canvas.Top="15">
-                <ItemsControl Name="InfectionDraws_IC">
-                <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel/>
-                        </ItemsPanelTemplate>
-                   </ItemsControl.ItemsPanel>
-                   <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="1" Background="White">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="20.3"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Label Content="{Binding Name}"
-                                       HorizontalAlignment="Stretch"
-                                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                       Padding="0" Height="20" FontSize="12" Margin="1"
-                                       Background="{Binding Color,Converter={StaticResource CityCardColorConverter}}"
-                                       Foreground="{Binding Color,Converter={StaticResource CityCardFontColorConverter}}"
-                                       FontWeight="ExtraBold"
-                                       Grid.Row="0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-            <ScrollViewer BorderBrush="LightGreen"
-                          BorderThickness="0.5" 
-                          Height="100" Width="140" Canvas.Left="1005" Canvas.Top="15">
-                <ItemsControl Name="InfectionDiscards_IC">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="1" Background="White">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="20.3"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Label Content="{Binding Name}"
-                                       HorizontalAlignment="Stretch"
-                                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                       Padding="0" Height="20" FontSize="12" Margin="1"
-                                       Background="{Binding Color,Converter={StaticResource CityCardColorConverter}}"
-                                       Foreground="{Binding Color,Converter={StaticResource CityCardFontColorConverter}}"
-                                       FontWeight="ExtraBold"
-                                       Grid.Row="0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-            <ScrollViewer BorderBrush="LightGreen"
-                          BorderThickness="0.5" 
-                          Height="200" Width="140" Canvas.Left="820" Canvas.Bottom="15">
-                <ItemsControl Name="PlayerDraws_IC">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="1" Background="White">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="20.3"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Label Content="{Binding Name}"
-                                       HorizontalAlignment="Stretch"
-                                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                       Padding="0" Height="20" FontSize="12" Margin="1"
-                                       Background="{Binding Color,Converter={StaticResource CityCardColorConverter}}"
-                                       Foreground="{Binding Color,Converter={StaticResource CityCardFontColorConverter}}"
-                                       FontWeight="ExtraBold"
-                                       Grid.Row="0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-            <ScrollViewer BorderBrush="LightGreen"
-                          BorderThickness="0.5" 
-                          Height="200" Width="140" Canvas.Left="980" Canvas.Bottom="15">
-                <ItemsControl Name="PlayerDiscards_IC">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="1" Background="White">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="20.3"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Label Content="{Binding Name}"
-                                       HorizontalAlignment="Stretch"
-                                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                       Padding="0" Height="20" FontSize="12" Margin="1"
-                                       Background="{Binding Color,Converter={StaticResource CityCardColorConverter}}"
-                                       Foreground="{Binding Color,Converter={StaticResource CityCardFontColorConverter}}"
-                                       FontWeight="ExtraBold"
-                                       Grid.Row="0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-            <WrapPanel Canvas.Left="430" Canvas.Bottom="0" Height="120" Width="400" Canvas.Top="638"
-                       Background="DarkBlue" HorizontalAlignment="Center">
-                <Button  Height="50" Width="50"
-                         Click="Treat_Click"
-                         Visibility="{Binding CurrentMode.ShowTreat,Converter={StaticResource ButtonToVisibility}}">
-                    <Button.Background>
-                        <ImageBrush ImageSource="Images/Icons/Icon--Pill.png"/>
-                    </Button.Background>
-                </Button>
-                <Button  Height="50" Width="50" Tag="Research"
-                         Click="Build_Click"
-                         Visibility="{Binding CurrentMode.ShowBuildResearchStation,Converter={StaticResource ButtonToVisibility}}">
-                    <Button.Background>
-                        <ImageBrush ImageSource="Images/Icons/Icon--House.png"/>
-                    </Button.Background>
-                </Button>
-                <Button  Height="50" Width="50" Tag="Cure"
-                         Click="Cure_Click"
-                         Visibility="{Binding CurrentMode.ShowCure,Converter={StaticResource ButtonToVisibility}}">
-                    <Button.Background>
-                        <ImageBrush ImageSource="Images/Icons/Icon--Cure.jpg"/>
-                    </Button.Background>
-                </Button>
-                <Button  Height="50" Width="50" Tag="Trade"
-                         Click="Trade_Click"
-                         Visibility="{Binding CurrentMode.ShowTrade,Converter={StaticResource ButtonToVisibility}}">
-                    <Button.Background>
-                        <ImageBrush ImageSource="Images/Icons/Icon--Trade.png"/>
-                    </Button.Background>
-                </Button>
-                <Border Visibility="{Binding Legacy.QuarantineUnlocked}">
-                    <Button  Height="50" Width="50" Tag="Quarantine"
-                         Click="Quarantine_Click"
-                         Visibility="{Binding CurrentMode.ShowQuarantine,Converter={StaticResource ButtonToVisibility}}">
-                        <Button.Background>
-                            <ImageBrush ImageSource="Images/Icons/Icon--Quarantine.png"/>
-                        </Button.Background>
-                    </Button>
-                </Border>
-                <Button  Height="50" Width="50"
-                         Click="PassTurn_Click"
-                         Visibility="{Binding CurrentMode.ShowPass,Converter={StaticResource ButtonToVisibility}}">
-                    <Button.Background>
-                        <ImageBrush ImageSource="Images/Icons/Icon--EndTurn.png"/>
-                    </Button.Background>
-                </Button>
-            </WrapPanel>
-
-            <ItemsControl Name="Diseases_IC" Width="285" Height="163"
-                          ItemsSource="{Binding Diseases}"
-                          Canvas.Bottom="0" Grid.Column="0" IsHitTestVisible="False" Canvas.Top="585" Canvas.Left="10">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical" Width="66" Margin="0,0,4,0">
-                            <Label Content="Remaining:" Foreground="White" 
-                                   FontSize="10"
-                                   HorizontalContentAlignment="Center"/>
-                            <Label Content="{Binding CubesInSupply}" Foreground="White" 
-                                   HorizontalContentAlignment="Center"
-                                   FontSize="20"/>
-                            <Label Content="CURED" Foreground="White"
-                                   Visibility="{Binding Cured,Converter={StaticResource ButtonToVisibility}}"
-                                   HorizontalContentAlignment="Center"/>
-                            <Label Content="ERADICATED" Foreground="White"
-                                   FontSize="10"
-                                   Visibility="{Binding Eradicated,Converter={StaticResource ButtonToVisibility}}"
-                                   HorizontalContentAlignment="Center"/>
-
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Canvas>
-        <!--<Border BorderBrush="Aquamarine"
-                BorderThickness="4"
-                Grid.Column="0"
-                Visibility="{Binding CurrentMode.SelectFundedEvent,Converter={StaticResource ButtonToVisibility}}">
-            <StackPanel 
-                      Background="DarkBlue"
-                      HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label Content="Select Funded Events"
-                       Foreground="Yellow"
-                       FontSize="34"
-                       HorizontalAlignment="Center"/>
-                <ItemsControl Name="FundedEventSelection_IC" Height="500" Width="1000">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding Image}" Height="200" Margin="5"/>
-
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </Border>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <ItemsControl Name="Players_IC"
-                      Grid.Column="1">
+                      Grid.Column="0" Grid.Row="0">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel/>
@@ -494,7 +60,6 @@
                 <DataTemplate>
                     <Grid Margin="4" Height="179">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
@@ -535,35 +100,31 @@
                                    FontWeight="ExtraBlack"
                                      Grid.Column="3"/>
                         </Grid>
-                        <Label Content="{Binding Role}" Style="{StaticResource CharacterCard}"
+                        <Label Content="{Binding Money}" Style="{StaticResource CharacterCard}"
                                Grid.Column="0" Grid.Row="1"/>
-                        <Label Content="{Binding Relationship0}" Style="{StaticResource CharacterCard}"
+                        <Label Content="{Binding Levels[0]}" Style="{StaticResource CharacterCard}"
                                Grid.Column="0" Grid.Row="2"/>
-                        <Label Content="{Binding Relationship1}" Style="{StaticResource CharacterCard}"
+                        <Label Content="{Binding Levels[1]}" Style="{StaticResource CharacterCard}"
                                Grid.Column="0" Grid.Row="3"/>
-                        <Label Content="{Binding Upgrade1}" Style="{StaticResource CharacterCard}"
+                        <Label Content="{Binding Levels[2]}" Style="{StaticResource CharacterCard}"
                                Grid.Column="0" Grid.Row="4"/>
-                        <Label Content="{Binding Upgrade2}" Style="{StaticResource CharacterCard}"
+                        <Label Content="{Binding Levels[3]}" Style="{StaticResource CharacterCard}"
                                Grid.Column="0" Grid.Row="5"/>
-                        <Label Content="{Binding Scar1}" Style="{StaticResource CharacterCard}"
+                        <Label Content="{Binding Levels[4]}" Style="{StaticResource CharacterCard}"
                                Grid.Column="0" Grid.Row="6"/>
-                        <Label Content="{Binding Scar2}" Style="{StaticResource CharacterCard}"
-                               Grid.Column="0" Grid.Row="7"/>
 
-                        <Label Content="Role:" Style="{StaticResource CharacterField}"
+                        <Label Content="Florins:" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="1"/>
-                        <Label Content="Relationship 1:" Style="{StaticResource CharacterField}"
+                        <Label Content="Chili Level:" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="2"/>
-                        <Label Content="Relationship 2:" Style="{StaticResource CharacterField}"
+                        <Label Content="Indigo Level:" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="3"/>
-                        <Label Content="Upgrade 1:" Style="{StaticResource CharacterField}"
+                        <Label Content="Pepper Level:" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="4"/>
-                        <Label Content="Upgrade 2:" Style="{StaticResource CharacterField}"
+                        <Label Content="Saffron Level:" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="5"/>
-                        <Label Content="Scar 1:" Style="{StaticResource CharacterField}"
+                        <Label Content="Tea Level:" Style="{StaticResource CharacterField}"
                                Grid.Column="0" Grid.Row="6"/>
-                        <Label Content="Scar 2:" Style="{StaticResource CharacterField}"
-                               Grid.Column="0" Grid.Row="7"/>
                         <ScrollViewer 
                                         BorderBrush="Bisque"
                                         BorderThickness="0.5"

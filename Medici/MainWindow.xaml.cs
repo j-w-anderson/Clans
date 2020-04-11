@@ -31,13 +31,7 @@ namespace Medici
 
             DataContext = gameSession;
             
-            Pawns_IC.ItemsSource = gameSession.Players;
-            Paths_IC.ItemsSource = gameSession.Paths;
             Players_IC.ItemsSource = gameSession.Players;
-            PlayerDraws_IC.ItemsSource = gameSession.PlayerDeck.DrawPile;
-            PlayerDiscards_IC.ItemsSource = gameSession.PlayerDeck.DiscardPile;
-            InfectionDraws_IC.ItemsSource = gameSession.InfectionDeck.DrawPile;
-            InfectionDiscards_IC.ItemsSource = gameSession.InfectionDeck.DiscardPile;
             //FundedEventSelection_IC.ItemsSource = gameSession.AvailableEvents;
         }
 

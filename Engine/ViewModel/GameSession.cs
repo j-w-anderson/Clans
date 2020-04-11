@@ -21,12 +21,7 @@ namespace Engine
     {
         
         public ObservableCollection<Player> Players { get; set; } = new ObservableCollection<Player>();
-        public ObservableCollection<Path> Paths { get; set; }
-        public ObservableCollection<Disease> Diseases { get; set; } = new ObservableCollection<Disease>();
-        public ObservableCollection<EventCard> AvailableEvents { get; set; }
-        public Deck PlayerDeck;
-        public Deck InfectionDeck;
-        public LegacyDeck Legacy = new LegacyDeck();
+        public Deck ResourceDeck;
 
         public object Taxi;
         //public Supply Supply = new Supply();
@@ -73,8 +68,7 @@ namespace Engine
             CurrentMode = new UIMode(this);
             OutbreakCount = 0;
             
-            PlayerDeck = GameData.BuildResourceDeck();
-            AvailableEvents = GameData.GetAvailableEvents();
+            ResourceDeck = GameData.BuildResourceDeck();
             
             Players.Add(new Player(this, "Cyrus", "Cyan"));
             Players.Add(new Player(this, "Will", "White"));
@@ -86,73 +80,18 @@ namespace Engine
             CurrentPlayer = Players[0];
             CurrentPlayer.StartMainPhase();
             CurrentMode = new MainPhase(this, CurrentPlayer);
-
-            Players[0].GridLoc = new int[2] { 1, 1 };
-            Players[1].GridLoc = new int[2] { 1, 2 };
-            Players[2].GridLoc = new int[2] { 2, 1 };
-            Players[3].GridLoc = new int[2] { 2, 2 };
-
-            Players[0].Role = ROLE.Colonel;
-            Players[1].Role = ROLE.Dispatcher;
-            Players[2].Role = ROLE.Generalist;
-            Players[3].Role = ROLE.Medic;
-
-            Legacy.CurrentTime = LegacyDeck.TIME.FebStart;
+            
         }
 
         private void InitalSetup()
-        {
-            // Place initial cubes, deal player cards and shuffle decks
-            MakeDiseases();
-            PlaceInitialCubes();
-            //AvailableEvents = GameData.GetAvailableEvents().Shuffle(new Random()).Take(4).ToObservableCollection<EventCard>();
-            PlayerDeck.Adds(AvailableEvents.ToObservableCollection<Card>());
-            DealPlayerCards();
-            for (int i = 0; i < EpidemicCount; i++)
-            {
-                PlayerDeck.Add(GameData.GetEpidemicCard());
-            }
-            PlayerDeck.Shuffle();
+        { 
+            ResourceDeck.Shuffle();
         }
 
-        public void MakeDiseases()
-        {
-            foreach (ELEMENT c in new ELEMENT[4] { ELEMENT.YELLOW, ELEMENT.RED, ELEMENT.BLUE, ELEMENT.BLACK })
-            {
-                Diseases.Add(new Disease(c));
-            }
-        }
-
-        private void PlaceInitialCubes()
-        {
-            InfectionDeck.Shuffle();
-            for (int i = 0; i < 9; i++)
-            {
-                InfectionCard icard = InfectionDeck.Flip() as InfectionCard;
-                icard.City.AddCubes((i / 3) + 1);
-                Diseases.First(d => icard.Color == d.Color).CubesInSupply -= (i / 3) + 1;
-            }
-        }
-
-        private void DealPlayerCards()
-        {
-            PlayerDeck.Shuffle();
-            foreach (Player p in Players)
-            {
-                p.Draw(PlayerDeck);
-                p.Draw(PlayerDeck);
-                p.Draw(PlayerDeck);
-                p.Draw(PlayerDeck);
-                p.Draw(PlayerDeck);
-                p.Draw(PlayerDeck);
-                p.Draw(PlayerDeck);
-                p.Draw(PlayerDeck);
-            }
-        }
-
+        
         private void ShufflePlayerDeck()
         {
-            PlayerDeck.Shuffle(Deck.SHUFFLEMODE.EPIDEMIC);
+            ResourceDeck.Shuffle();
         }
 
 
@@ -179,73 +118,11 @@ namespace Engine
         }
         
 
-        internal void Treat(City location, ELEMENT color, bool all = false)
-        {
-            Disease target = Diseases.FirstOrDefault(d => d.Color == color);
-            if (target.Cured)
-            {
-                target.CubesInSupply += location.Items.FirstOrDefault(i => i.Element == color).Count;
-                location.RemoveAll(target);
-            }
-            else
-            {
-                target.CubesInSupply += 1;
-                location.RemoveOne(target);
-            }
-        }
 
-        internal void Cure(ELEMENT color)
-        {
-            Diseases.First(d => color == d.Color).Cure();
-        }
-
-        internal void Infect(bool bottom = false)
-        {
-            InfectionCard card;
-            if (bottom)
-            {
-                card = (InfectionCard)InfectionDeck.DrawBottom();
-            }
-            else
-            {
-                card = (InfectionCard)InfectionDeck.Draw();
-            }
-            InfectionDeck.Discard(card);
-        }
-
-        internal void TriggerOutbreak(City location, ELEMENT color, List<City> prev)
-        {
-            OutbreakCount += 1;
-            location.IncreaseTreatLevel();
-            prev.Add(location);
-            foreach (City adj in location.Adjacent)
-            {
-                if (adj.AddCubes(1, color) && !prev.Contains(adj))
-                {
-                    TriggerOutbreak(adj, color, prev);
-                }
-                else
-                {
-                    Diseases[(int)color].CubesInSupply -= 1;
-                }
-            }
-        }
-
-        internal void TriggerEpidemic(Card epidemic)
-        {
-            // Epidemic steps: Increase, Infect, Intensify
-            InfectionTrack += 1;
-            Infect(true);
-            InfectionDeck.Shuffle(Deck.SHUFFLEMODE.DISCARDONLY);
-
-            //InfectionDeck.DiscardPile.Clear();
-        }
-
+        
         internal void EndTurn()
         {
             // Draw phase
-            CurrentPlayer.Draw(PlayerDeck);
-            CurrentPlayer.Draw(PlayerDeck);
 
             // Discard
             // TODO
@@ -259,7 +136,6 @@ namespace Engine
             {
                 for (int i = 0; i < InfectionRate; i++)
                 {
-                    Infect();
                 }
             }
             int index = (Players.IndexOf(CurrentPlayer) + 1) % Players.Count;
