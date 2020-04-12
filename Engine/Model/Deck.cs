@@ -14,6 +14,9 @@ namespace Engine.Model
 
         public ObservableCollection<Card> DrawPile { get; set; } = new ObservableCollection<Card>();
         public ObservableCollection<Card> DiscardPile { get; set; } = new ObservableCollection<Card>();
+        public ObservableCollection<Card> BurnPile { get; set; } = new ObservableCollection<Card>();
+
+        public int CardsRemaining => DrawPile.Count();
 
         public Deck(ObservableCollection<Card> drawPile = null)
         {
@@ -21,6 +24,7 @@ namespace Engine.Model
             {
                 DrawPile = drawPile;
             }
+            OnPropertyChanged(nameof(CardsRemaining));
         }
 
         public Card Draw()
@@ -31,24 +35,29 @@ namespace Engine.Model
             }
             Card card = DrawPile[0];
             DrawPile.RemoveAt(0);
+            OnPropertyChanged(nameof(CardsRemaining));
             return card;
         }
-
-        public Card DrawBottom()
-        {
-            Card card = DrawPile.Last();
-            DrawPile.Remove(card);
-            return card;
-        }
-
+        
         public void Discard(Card card)
         {
             DiscardPile.Insert(0, card);
         }
 
+        public void Burn(int n)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                BurnPile.Add(Draw());
+                DrawPile.RemoveAt(0);
+            }
+            OnPropertyChanged(nameof(CardsRemaining));
+        }
+
         public void Add(Card card)
         {
             DrawPile.Add(card);
+            OnPropertyChanged(nameof(CardsRemaining));
         }
 
         public void Adds(ObservableCollection<Card> cards)
@@ -57,6 +66,7 @@ namespace Engine.Model
             {
                 DrawPile.Add(card);
             }
+            OnPropertyChanged(nameof(CardsRemaining));
         }
 
         public enum SHUFFLEMODE
@@ -68,10 +78,11 @@ namespace Engine.Model
 
         public void Shuffle()
         {
-
-                    DrawPile.Concat(DiscardPile);
-                    DiscardPile.Clear();
-                    DrawPile = Shuffler.Shuffle(DrawPile, rnd).ToObservableCollection<Card>();
+            DrawPile.Concat(DiscardPile);
+            DiscardPile.Clear();
+            DrawPile.Concat(BurnPile);
+            DrawPile = Shuffler.Shuffle(DrawPile, rnd).ToObservableCollection<Card>();
+            OnPropertyChanged(nameof(CardsRemaining));
         }
     }
 }

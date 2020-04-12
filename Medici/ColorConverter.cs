@@ -43,25 +43,25 @@ namespace Medici
     }
 
 
-    public class CityCardColorConverter : IValueConverter
+    public class CardColorConverter : IValueConverter
     {
 
         public object Convert(object color, Type targetType, object parameter, CultureInfo culture)
         {
             switch (color)
             {
-                case ELEMENT.YELLOW:
+                case RESOURCE.SAFFRON:
                     return new SolidColorBrush(Colors.Yellow);
-                case ELEMENT.RED:
-                    return new SolidColorBrush(Colors.Red);
-                case ELEMENT.BLUE:
-                    return new SolidColorBrush(Colors.Blue);
-                case ELEMENT.BLACK:
+                case RESOURCE.CHILI:
+                    return new SolidColorBrush(Colors.IndianRed);
+                case RESOURCE.INDIGO:
+                    return new SolidColorBrush(Colors.Indigo);
+                case RESOURCE.PEPPER:
                     return new SolidColorBrush(Colors.Black);
-                case ELEMENT.EVENT:
-                    return new SolidColorBrush(Colors.Orange);
-                case ELEMENT.EPIDEMIC:
-                    return new SolidColorBrush(Colors.DarkGreen);
+                case RESOURCE.TEA:
+                    return new SolidColorBrush(Colors.ForestGreen);
+                case RESOURCE.GOLD:
+                    return new SolidColorBrush(Colors.Gold);
                 default:
                     throw new ArgumentException();
             }
@@ -74,25 +74,25 @@ namespace Medici
     }
 
 
-    public class CityCardFontColorConverter : IValueConverter
+    public class CardFontColorConverter : IValueConverter
     {
 
         public object Convert(object color, Type targetType, object parameter, CultureInfo culture)
         {
             switch (color)
             {
-                case ELEMENT.YELLOW:
+                case RESOURCE.SAFFRON:
+                    return new SolidColorBrush(Colors.Orange);
+                case RESOURCE.CHILI:
+                    return new SolidColorBrush(Colors.Pink);
+                case RESOURCE.INDIGO:
+                    return new SolidColorBrush(Colors.Blue);
+                case RESOURCE.PEPPER:
+                    return new SolidColorBrush(Colors.Gray);
+                case RESOURCE.TEA:
+                    return new SolidColorBrush(Colors.LightGreen);
+                case RESOURCE.GOLD:
                     return new SolidColorBrush(Colors.Black);
-                case ELEMENT.RED:
-                    return new SolidColorBrush(Colors.Black);
-                case ELEMENT.BLUE:
-                    return new SolidColorBrush(Colors.Black);
-                case ELEMENT.EVENT:
-                    return new SolidColorBrush(Colors.Black);
-                case ELEMENT.BLACK:
-                    return new SolidColorBrush(Colors.White);
-                case ELEMENT.EPIDEMIC:
-                    return new SolidColorBrush(Colors.LimeGreen);
                 default:
                     throw new ArgumentException();
             }

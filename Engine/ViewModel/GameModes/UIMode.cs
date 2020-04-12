@@ -16,91 +16,25 @@ namespace Engine
         Player HasCard;
         Card Target;
 
-        virtual public bool ShowMovement => false;
-        virtual public bool ShowBuildResearchStation => false;
-        virtual public bool ShowCollectVaccines => false;
-        virtual public bool ShowCure => false;
-        virtual public bool ShowTrade => false;
-        virtual public bool ShowEquip => false;
-        virtual public bool ShowKill => false;
-        virtual public bool ShowQuarantine => false;
-        virtual public bool ShowTreat => false;
-        virtual public bool ShowCard => false;
-        virtual public bool ShowPass => true;
-
-        public bool CanSelectPlayer = false;
-
-        private bool _showSelectionWindow;
-
-        public bool ShowSelectionWindow
-        {
-            get { return _showSelectionWindow; }
-            set
-            {
-                _showSelectionWindow = value;
-                OnPropertyChanged(nameof(ShowSelectionWindow));
-            }
-        }
-
-        private bool _selectFundedEvent;
-
-        public bool SelectFundedEvent
-        {
-            get { return _selectFundedEvent; }
-            set
-            {
-                _selectFundedEvent = value;
-                OnPropertyChanged(nameof(SelectFundedEvent));
-            }
-        }
-
-        private bool _showActionModes;
-
-        public bool ShowActionModes
-        {
-            get { return _showActionModes; }
-            set
-            {
-                _showActionModes = value;
-                OnPropertyChanged(nameof(_showActionModes));
-            }
-        }
+        virtual public bool ShowAddCardToLot => false;
+        virtual public bool ShowStartAuction => false;
+        virtual public bool ShowBidOnLot => false;
+        virtual public bool ShowPassBid => false;
+        virtual public bool ShowContinue => false;
 
         public UIMode(GameSession game)
         {
             Game = game;
         }
-
-        public void PlayCard()
-        {
-            Game.CurrentMode = new SelectEventCard(Game, null);
-            return;
-        }
-
-
-        virtual public void SelectCity(string name)
-        {
-            return;
-        }
-
-        public void SelectCard(string name)
-        {
-            OldMode = Game.CurrentMode;
-            HasCard = Game.Players.FirstOrDefault(p => p.Hold.Count(c => c.Name == name) == 1);
-            return;
-        }
         
-        virtual public void Treat() { return; }
-        virtual public void Build(string tag) { return; }
-        virtual public void Trade() { return; }
-        virtual public void Cure() { return; }
-        virtual public void PassTurn() { return; }
-        virtual public void Quarantine() { return; }
-        virtual public void SwitchPlayer(Player p) { return; }
 
-        virtual public void ChoosePlayer(string name) { return; }
-        virtual public void ChooseCity(string name) { return; }
-
-        virtual public void UpdateFlags() { }
+        virtual public void UpdateFlags()
+        {
+            OnPropertyChanged(nameof(ShowAddCardToLot));
+            OnPropertyChanged(nameof(ShowStartAuction));
+            OnPropertyChanged(nameof(ShowBidOnLot));
+            OnPropertyChanged(nameof(ShowPassBid));
+            OnPropertyChanged(nameof(ShowContinue));
+        }
     }
 }

@@ -16,12 +16,7 @@ namespace Engine
         {
         }
 
-
-        override public void ChoosePlayer(string name)
-        {
-            Player chosen = Game.Players.FirstOrDefault(p => p.Name == name);
-            SendPlayer(this, chosen);
-        }
+        
     }
 
 

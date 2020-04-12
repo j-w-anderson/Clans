@@ -9,8 +9,8 @@
         WindowState="Maximized"
         Height="785" Width="1500" HorizontalAlignment="Center" VerticalAlignment="Center">
     <Window.Resources>
-        <local:CityCardColorConverter x:Key="CityCardColorConverter"/>
-        <local:CityCardFontColorConverter x:Key="CityCardFontColorConverter"/>
+        <local:CardColorConverter x:Key="CardColorConverter"/>
+        <local:CardFontColorConverter x:Key="CardFontColorConverter"/>
         <BooleanToVisibilityConverter x:Key="ButtonToVisibility"/>
 
         <Style TargetType="Label" x:Key="CharacterCard">
@@ -44,6 +44,8 @@
         </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="AUTO"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -71,9 +73,10 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="SandyBrown" MouseUp="Player_Click" Tag="{Binding Name}">
+                        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Background="SandyBrown" Tag="{Binding Name}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="30"/>
                                 <ColumnDefinition Width="AUTO"/>
@@ -123,9 +126,176 @@
                         <Button Content="{Binding Levels[4]}" Click="Tea_Up" Tag="{Binding Name}"
                                Grid.Column="1" Grid.Row="6"/>
 
+                        <Label Content="{Binding HoldTotal}" Style="{StaticResource CharacterField}"
+                               Grid.Column="2" Grid.Row="1"/>
+                        <ItemsControl Name="Cards_IC"
+                                      ItemsSource="{Binding Hold}"
+                                      Grid.Column="2" Grid.Row="2"
+                                      Grid.RowSpan="5">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="1" Background="White">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="20.3"/>
+                                        </Grid.RowDefinitions>
+                                        <Label Content="{Binding Name}"
+                                               HorizontalAlignment="Stretch"
+                                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                               Padding="0" Height="20" FontSize="12" Margin="1"
+                                               Background="{Binding Resource,Converter={StaticResource CardColorConverter}}"
+                                               Foreground="{Binding Resource,Converter={StaticResource CardFontColorConverter}}"
+                                               FontWeight="ExtraBold"
+                                               Grid.Row="0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        
+        <Grid Margin="10" Grid.Column="1" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="AUTO"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Current Player:" Style="{StaticResource CharacterField}"
+                   Grid.Column="0" Grid.Row="0"/>
+            <Label Content="{Binding CurrentPlayer.Name}" Style="{StaticResource CharacterField}"
+                   Grid.Column="1" Grid.Row="0"/>
+            <Label Content="Current Lot:" Style="{StaticResource CharacterField}"
+                   Grid.Column="0" Grid.Row="1"/>
+
+            <ItemsControl Name="Lot_IC"
+                          ItemsSource="{Binding Lot}"
+                          Grid.Column="0" Grid.Row="2"
+                          Grid.ColumnSpan="2">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="1" Background="White">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20.3"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="{Binding Name}"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                   Padding="0" Height="20" FontSize="12" Margin="1"
+                                   Background="{Binding Resource,Converter={StaticResource CardColorConverter}}"
+                                   Foreground="{Binding Resource,Converter={StaticResource CardFontColorConverter}}"
+                                   FontWeight="ExtraBold"
+                                   Grid.Row="0"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Content="Add to Lot" Visibility="{Binding ShowAddCardToLot,Converter={StaticResource ButtonToVisibility}}"
+                    Click="AddToLot_Click"
+                    Grid.Column="0" Grid.Row="3"/>
+            <Button Content="Proceed To Auction" Visibility="{Binding ShowStartAuction,Converter={StaticResource ButtonToVisibility}}"
+                    Click="StartAuction_Click"
+                    Grid.Column="1" Grid.Row="3"/>
+            <Button Content="Bid On Lot" Visibility="{Binding ShowBidOnLot,Converter={StaticResource ButtonToVisibility}}"
+                    Click="Bid_Click"
+                    Grid.Column="0" Grid.Row="3"/>
+            <Button Content="Pass Bid" Visibility="{Binding ShowPassBid,Converter={StaticResource ButtonToVisibility}}"
+                    Click="PassBid_Click"
+                    Grid.Column="1" Grid.Row="3"/>
+            <Button Content="Continue" Visibility="{Binding ShowContinue,Converter={StaticResource ButtonToVisibility}}"
+                    Click="Continue_Click"
+                    Grid.Column="1" Grid.Row="3"
+                    Grid.ColumnSpan="2"/>
+
+            <Label Content="Current Bidder:" Style="{StaticResource CharacterField}"
+                   Visibility="{Binding ShowPassBid, Converter={StaticResource ButtonToVisibility}}"
+                   Grid.Column="0" Grid.Row="4"/>
+            <Label Content="{Binding CurrentBidder.Name}" Style="{StaticResource CharacterField}"
+                   Visibility="{Binding ShowPassBid, Converter={StaticResource ButtonToVisibility}}"
+                   Grid.Column="1" Grid.Row="4"/>
+            <Label Content="High Bidder:" Style="{StaticResource CharacterField}"
+                   Visibility="{Binding ShowPassBid, Converter={StaticResource ButtonToVisibility}}"
+                   Grid.Column="0" Grid.Row="5"/>
+            <Label Content="{Binding HighBidder.Name}" Style="{StaticResource CharacterField}"
+                   Visibility="{Binding ShowPassBid, Converter={StaticResource ButtonToVisibility}}"
+                   Grid.Column="1" Grid.Row="5"/>
+            <Label Content="Current Bid:" Style="{StaticResource CharacterField}"
+                   Visibility="{Binding ShowPassBid, Converter={StaticResource ButtonToVisibility}}"
+                   Grid.Column="0" Grid.Row="6"/>
+            <Label Content="{Binding CurrentBid}" Style="{StaticResource CharacterField}"
+                   Visibility="{Binding ShowPassBid, Converter={StaticResource ButtonToVisibility}}"
+                   Grid.Column="1" Grid.Row="6"/>
+            <Label Content="{Binding Message}" Style="{StaticResource CharacterField}"
+                   Grid.Column="0" Grid.Row="7"
+                   Grid.ColumnSpan="2"/>
+
+        </Grid>
+        <Grid Grid.Column="2" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Day:" Style="{StaticResource CharacterField}"
+                   Grid.Column="0" Grid.Row="0"/>
+            <Label Content="{Binding Day}" Style="{StaticResource CharacterField}"
+                   Grid.Column="1" Grid.Row="0"/>
+            <Label Content="Cards Remaining:" Style="{StaticResource CharacterField}"
+                   Grid.Column="0" Grid.Row="1"/>
+            <Label Content="{Binding CardsRemaining}" Style="{StaticResource CharacterField}"
+                   Grid.Column="1" Grid.Row="1"/>
+
+
+            <ItemsControl Name="Discards_IC"
+                          ItemsSource="{Binding Lot}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="1" Background="White">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20.3"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="{Binding Name}"
+                                       HorizontalAlignment="Stretch"
+                                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                       Padding="0" Height="20" FontSize="12" Margin="1"
+                                       Background="{Binding Resource,Converter={StaticResource CardColorConverter}}"
+                                       Foreground="{Binding Resource,Converter={StaticResource CardFontColorConverter}}"
+                                       FontWeight="ExtraBold"
+                                       Grid.Row="0"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
     </Grid>
 </Window>

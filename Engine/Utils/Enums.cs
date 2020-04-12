@@ -99,5 +99,16 @@ namespace Engine.Utils
         GOLD
     }
 
+    public enum PHASE
+    {
+        FILLHOLD,
+        OVERALLVALUE,
+        LEVELADVANCE,
+        LEVELWINNERS,
+        LEVELBONUS,
+        NEXTDAY,
+        POSTGAME
+    }
+
 }
 

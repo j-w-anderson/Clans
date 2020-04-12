@@ -12,7 +12,7 @@ namespace Engine
     {
         public RESOURCE Resource { get; set; }
         public int Value { get; set; }
-        public string Name => Resource.ToString() + Value.ToString();
+        public string Name => Resource.ToString() + " " + Value.ToString();
 
 
         public Card(RESOURCE resource,int value)

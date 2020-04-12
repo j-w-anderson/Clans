@@ -65,8 +65,8 @@
     <Compile Include="Model\GameData.cs" />
     <Compile Include="Utils\Random.cs" />
     <Compile Include="Model\Disease.cs" />
-    <Compile Include="ViewModel\GameModes\MainPhase.cs" />
-    <Compile Include="ViewModel\GameModes\SelectCard.cs" />
+    <Compile Include="ViewModel\GameModes\LotPhase.cs" />
+    <Compile Include="ViewModel\GameModes\AuctionPhase.cs" />
     <Compile Include="ViewModel\GameModes\SelectEventCard.cs" />
     <Compile Include="ViewModel\GameModes\SelectPlayer.cs" />
     <Compile Include="ViewModel\GameSession.cs" />

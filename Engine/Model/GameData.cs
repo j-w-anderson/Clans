@@ -111,16 +111,59 @@ namespace PandemicLegacy
             ObservableCollection<Card> cards = new ObservableCollection<Card>();
             List<RESOURCE> resources = new List<RESOURCE> { RESOURCE.TEA, RESOURCE.CHILI, RESOURCE.INDIGO, RESOURCE.PEPPER, RESOURCE.SAFFRON };
             List<int> values = new List<int> { 0, 1, 2, 3, 4, 5, 5 };
-            foreach(RESOURCE r in resources)
+            foreach (RESOURCE r in resources)
             {
-                foreach(int v in values)
+                foreach (int v in values)
                 {
                     cards.Add(new Card(r, v));
                 }
             }
+            cards.Add(new Card(RESOURCE.GOLD, 10));
 
             return new Deck(cards);
         }
 
+        public static List<int> BurnCount = new List<int> { 18, 18, 12, 6, 0 };
+
+        public static int CardsToBurn(int nplayers)
+        {
+            return BurnCount[nplayers - 2];
+        }
+
+
+        static int[,] HoldRewards = new int[,] {{20, 0, 0, 0, 0, 0 },
+                                                {30,15, 0, 0, 0, 0 },
+                                                {30,20,10, 0, 0, 0 },
+                                                {30,20,10, 5, 0, 0 },
+                                                {30,20,15,10, 5, 0 } };
+
+        public static int GetHoldReward(int rank, int nplayers)
+        {
+            return HoldRewards[nplayers - 2,rank];
+        }
+
+        static int[] TrackRewards = new int[] { 10, 5 };
+
+        public static int GetTrackReward(int rank, int nplayers)
+        {
+            if (rank == 0) { return 10; }
+            if (rank == 1 && nplayers != 2) { return 5; }
+            return 0;
+        }
+
+        public static int GetTrackBonus(int level)
+        {
+            switch (level)
+            {
+                case 0:
+                    return 20;
+                case 1:
+                    return 10;
+                case 2:
+                    return 5;
+                default:
+                    return 0;
+            }
+        }
     }
 }

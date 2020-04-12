@@ -32,55 +32,11 @@ namespace Medici
             DataContext = gameSession;
 
             Players_IC.ItemsSource = gameSession.Players;
+            Lot_IC.ItemsSource = gameSession.Lot;
+            Discards_IC.ItemsSource = gameSession.ResourceDeck.DiscardPile;
             //FundedEventSelection_IC.ItemsSource = gameSession.AvailableEvents;
         }
-
-        private void Card_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.CurrentMode.SelectCard((sender as Label).Content.ToString());
-        }
-
-        private void Player_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.CurrentMode.ChoosePlayer((sender as Grid).Tag.ToString());
-        }
-
-        private void CityDot_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.CurrentMode.ChooseCity((sender as Button).Tag.ToString());
-        }
-
-        private void Treat_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.CurrentMode.Treat();
-        }
-
-        private void Trade_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.CurrentMode.Trade();
-        }
-        private void Build_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.CurrentMode.Build((sender as Button).Tag.ToString());
-        }
-        private void Cure_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.CurrentMode.Cure();
-        }
-        private void Quarantine_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.CurrentMode.Quarantine();
-        }
-        private void PassTurn_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.CurrentMode.PassTurn();
-        }
-
-        private void Ellipse_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
+        
         private void Money_Up(object sender, RoutedEventArgs e)
         {
             Button target = sender as Button;
@@ -119,5 +75,29 @@ namespace Medici
             gameSession.Adjust(name, "Tea", 1);
         }
 
+        private void AddToLot_Click(object sender, RoutedEventArgs e)
+        {
+            gameSession.AddCardToLot();
+        }
+
+        private void StartAuction_Click(object sender, RoutedEventArgs e)
+        {
+            gameSession.StartAuction();
+        }
+        private void Bid_Click(object sender, RoutedEventArgs e)
+        {
+            gameSession.Bid();
+        }
+
+        private void PassBid_Click(object sender, RoutedEventArgs e)
+        {
+            gameSession.PassBid();
+        }
+
+
+        private void Continue_Click(object sender, RoutedEventArgs e)
+        {
+            gameSession.Continue();
+        }
     }
 }
