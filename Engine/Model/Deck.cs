@@ -49,7 +49,6 @@ namespace Engine.Model
             for(int i = 0; i < n; i++)
             {
                 BurnPile.Add(Draw());
-                DrawPile.RemoveAt(0);
             }
             OnPropertyChanged(nameof(CardsRemaining));
         }
@@ -69,18 +68,12 @@ namespace Engine.Model
             OnPropertyChanged(nameof(CardsRemaining));
         }
 
-        public enum SHUFFLEMODE
-        {
-            FULL,
-            DISCARDONLY,
-            EPIDEMIC
-        }
-
         public void Shuffle()
         {
-            DrawPile.Concat(DiscardPile);
+            DrawPile = DrawPile.Concat(DiscardPile).ToObservableCollection<Card>();
             DiscardPile.Clear();
-            DrawPile.Concat(BurnPile);
+            DrawPile = DrawPile.Concat(BurnPile).ToObservableCollection<Card>();
+            BurnPile.Clear();
             DrawPile = Shuffler.Shuffle(DrawPile, rnd).ToObservableCollection<Card>();
             OnPropertyChanged(nameof(CardsRemaining));
         }

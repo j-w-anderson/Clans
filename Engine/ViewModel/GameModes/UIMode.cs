@@ -13,8 +13,6 @@ namespace Engine
         public MODE Mode { get; set; }
         public GameSession Game { get; set; }
         public UIMode OldMode;
-        Player HasCard;
-        Card Target;
 
         virtual public bool ShowAddCardToLot => false;
         virtual public bool ShowStartAuction => false;

@@ -267,12 +267,13 @@
                    Grid.Column="1" Grid.Row="0"/>
             <Label Content="Cards Remaining:" Style="{StaticResource CharacterField}"
                    Grid.Column="0" Grid.Row="1"/>
-            <Label Content="{Binding CardsRemaining}" Style="{StaticResource CharacterField}"
+            <Label Content="{Binding ResourceDeck.CardsRemaining}" Style="{StaticResource CharacterField}"
                    Grid.Column="1" Grid.Row="1"/>
 
 
             <ItemsControl Name="Discards_IC"
-                          ItemsSource="{Binding Lot}">
+                          ItemsSource="{Binding Lot}"
+                          Grid.Column="0" Grid.Row="2">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel/>

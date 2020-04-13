@@ -21,7 +21,6 @@ namespace Engine
     {
 
         public ObservableCollection<Player> Players { get; set; } = new ObservableCollection<Player>();
-        public Deck ResourceDeck;
 
         public object Taxi;
         //public Supply Supply = new Supply();
@@ -29,6 +28,21 @@ namespace Engine
         public int ShipCapacity => Players.Count == 2 ? 7:5;
         public PHASE Phase;
         public int Step;
+
+
+
+        private Deck _resourceDeck;
+
+        public Deck ResourceDeck
+        {
+            get { return _resourceDeck; }
+            set
+            {
+                _resourceDeck = value;
+                OnPropertyChanged(nameof(ResourceDeck));
+            }
+        }
+
 
         private string _message;
 
@@ -103,9 +117,7 @@ namespace Engine
                 OnPropertyChanged(nameof(Day));
             }
         }
-
-
-
+        
         public int CardsRemaining => ResourceDeck.CardsRemaining;
         public int CurrentPlayerID => Players.IndexOf(CurrentPlayer);
         public int CurrentBidderID => Players.IndexOf(CurrentBidder);
@@ -161,33 +173,6 @@ namespace Engine
             }
         }
 
-        private int _outbreakCount;
-
-        public int OutbreakCount
-        {
-            get { return _outbreakCount; }
-            set
-            {
-                _outbreakCount = value;
-                OnPropertyChanged(nameof(OutbreakCount));
-            }
-        }
-
-        private int _infectionTrack;
-
-        public int InfectionTrack
-        {
-            get { return _infectionTrack; }
-            set
-            {
-                _infectionTrack = value;
-                OnPropertyChanged(nameof(InfectionRate));
-                OnPropertyChanged(nameof(InfectionTrack));
-            }
-        }
-
-        public int InfectionRate => (int)((double)InfectionTrack * 0.4 + 2);
-
         public UIMode CurrentMode { get; set; }
 
         public ObservableCollection<Card> Lot = new ObservableCollection<Card>();
@@ -195,7 +180,6 @@ namespace Engine
         public GameSession()
         {
             CurrentMode = new UIMode(this);
-            OutbreakCount = 0;
 
             ResourceDeck = GameData.BuildResourceDeck();
 
@@ -203,18 +187,13 @@ namespace Engine
             Players.Add(new Player(this, "Will", "White"));
             Players.Add(new Player(this, "Piper", "Pink"));
             Players.Add(new Player(this, "Bryan", "Brown"));
+        }
 
-
-            ResourceDeck.Shuffle();
-            InitalSetup();
+        public void StartGame()
+        { 
             NewDay();
         }
-
-        private void InitalSetup()
-        {
-            ResourceDeck.Shuffle();
-        }
-
+        
         public void ResetFlags()
         {
             ShowAddCardToLot = false;
@@ -237,7 +216,7 @@ namespace Engine
             {
                 p.Empty(ResourceDeck);
             }
-            ShufflePlayerDeck();
+            ShuffleResourceDeck();
             int lowest_money = Players.Min(p => p.Money);
             List<Player> Losing = Players.Where(p => p.Money == lowest_money).ToList();
             var random = new Random();
@@ -508,7 +487,7 @@ namespace Engine
             }
         }
 
-        private void ShufflePlayerDeck()
+        private void ShuffleResourceDeck()
         {
             ResourceDeck.Shuffle();
             ResourceDeck.Burn(GameData.CardsToBurn(Players.Count()));

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medici", "Medici\Medici.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{EE88F21C-F593-4A90-8374-328440BA1046}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEngine", "TestEngine\TestEngine.csproj", "{A9AB17DB-672D-4DD3-9DF5-1CB727EC3F5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EE88F21C-F593-4A90-8374-328440BA1046}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE88F21C-F593-4A90-8374-328440BA1046}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE88F21C-F593-4A90-8374-328440BA1046}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9AB17DB-672D-4DD3-9DF5-1CB727EC3F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9AB17DB-672D-4DD3-9DF5-1CB727EC3F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9AB17DB-672D-4DD3-9DF5-1CB727EC3F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9AB17DB-672D-4DD3-9DF5-1CB727EC3F5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
