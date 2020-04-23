@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medici", "Medici\Medici.csproj", "{59911F86-A139-4CBC-A7AA-42978A5E9282}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clans", "Medici\Clans.csproj", "{59911F86-A139-4CBC-A7AA-42978A5E9282}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{EE88F21C-F593-4A90-8374-328440BA1046}"
 EndProject

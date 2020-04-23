@@ -131,6 +131,9 @@
     <Resource Include="Images\PanicLevel5s.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\ClansBoard.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Images\Events\Event--AirLift.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

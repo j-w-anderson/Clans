@@ -60,9 +60,9 @@
       <Project>{ee88f21c-f593-4a90-8374-328440ba1046}</Project>
       <Name>Engine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Medici\Medici.csproj">
+    <ProjectReference Include="..\Medici\Clans.csproj">
       <Project>{59911f86-a139-4cbc-a7aa-42978a5e9282}</Project>
-      <Name>Medici</Name>
+      <Name>Clans</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

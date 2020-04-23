@@ -32,8 +32,8 @@ namespace Medici
             DataContext = gameSession;
 
             Players_IC.ItemsSource = gameSession.Players;
-            Lot_IC.ItemsSource = gameSession.Lot;
-            Discards_IC.ItemsSource = gameSession.ResourceDeck.DiscardPile;
+            //Lot_IC.ItemsSource = gameSession.Lot;
+            //Discards_IC.ItemsSource = gameSession.ResourceDeck.DiscardPile;
 
             gameSession.StartGame();
             //FundedEventSelection_IC.ItemsSource = gameSession.AvailableEvents;
