@@ -21,28 +21,12 @@ namespace Engine
     {
 
         public ObservableCollection<Player> Players { get; set; } = new ObservableCollection<Player>();
-
-        public object Taxi;
+        public ObservableCollection<Region> Regions { get; set; } = new ObservableCollection<Region>();
+        public ObservableCollection<Clan> Clans { get; set; } = new ObservableCollection<Clan>();
         //public Supply Supply = new Supply();
         public int CurrentPhaseID = 0;
-        public int ShipCapacity => Players.Count == 2 ? 7:5;
         public PHASE Phase;
         public int Step;
-
-
-
-        private Deck _resourceDeck;
-
-        public Deck ResourceDeck
-        {
-            get { return _resourceDeck; }
-            set
-            {
-                _resourceDeck = value;
-                OnPropertyChanged(nameof(ResourceDeck));
-            }
-        }
-
 
         private string _message;
 
@@ -69,99 +53,20 @@ namespace Engine
             }
         }
 
-        private Player _currentBidder;
+        public int CurrentPlayer_id => Players.IndexOf(CurrentPlayer);
 
-        public Player CurrentBidder
+        private int _chips=12;
+
+        public int Chips
         {
-            get { return _currentBidder; }
+            get { return _chips; }
             set
             {
-                _currentBidder = value;
-                OnPropertyChanged(nameof(CurrentBidder));
-            }
-        }
-
-        private Player _highBidder;
-
-        public Player HighBidder
-        {
-            get { return _highBidder; }
-            set
-            {
-                _highBidder = value;
-                OnPropertyChanged(nameof(HighBidder));
-            }
-        }
-
-        private int _currentBid;
-
-        public int CurrentBid
-        {
-            get { return _currentBid; }
-            set
-            {
-                _currentBid = value;
-                OnPropertyChanged(nameof(CurrentBid));
-            }
-        }
-
-
-        private int _day;
-
-        public int Day
-        {
-            get { return _day; }
-            set
-            {
-                _day = value;
-                OnPropertyChanged(nameof(Day));
+                _chips = value;
+                OnPropertyChanged(nameof(Chips));
             }
         }
         
-        public int CardsRemaining => ResourceDeck.CardsRemaining;
-        public int CurrentPlayerID => Players.IndexOf(CurrentPlayer);
-        public int CurrentBidderID => Players.IndexOf(CurrentBidder);
-
-        private bool _showAddCardToLot;
-        public bool ShowAddCardToLot
-        {
-            get { return _showAddCardToLot; }
-            set
-            {
-                _showAddCardToLot = value;
-                OnPropertyChanged(nameof(ShowAddCardToLot));
-            }
-        }
-        private bool _showStartAuction;
-        public bool ShowStartAuction
-        {
-            get { return _showStartAuction; }
-            set
-            {
-                _showStartAuction = value;
-                OnPropertyChanged(nameof(ShowStartAuction));
-            }
-        }
-        private bool _showBidOnLot;
-        public bool ShowBidOnLot
-        {
-            get { return _showBidOnLot; }
-            set
-            {
-                _showBidOnLot = value;
-                OnPropertyChanged(nameof(ShowBidOnLot));
-            }
-        }
-        private bool _showPassBid;
-        public bool ShowPassBid
-        {
-            get { return _showPassBid; }
-            set
-            {
-                _showPassBid = value;
-                OnPropertyChanged(nameof(ShowPassBid));
-            }
-        }
         private bool _showContinue;
         public bool ShowContinue
         {
@@ -173,6 +78,15 @@ namespace Engine
             }
         }
 
+        private Region _origin;
+
+        public Region Origin
+        {
+            get { return _origin; }
+            set { _origin = value; }
+        }
+
+
         public UIMode CurrentMode { get; set; }
 
         public ObservableCollection<Card> Lot = new ObservableCollection<Card>();
@@ -181,166 +95,73 @@ namespace Engine
         {
             CurrentMode = new UIMode(this);
 
-            ResourceDeck = GameData.BuildResourceDeck();
+            Regions = GameData.GetRegions().ToObservableCollection<Region>();
+            Clans = GameData.GetClans().ToObservableColletion<Clan>();
 
-            Players.Add(new Player(this, "Cyrus", "Cyan"));
-            Players.Add(new Player(this, "Will", "White"));
-            Players.Add(new Player(this, "Piper", "Pink"));
-            Players.Add(new Player(this, "Bryan", "Brown"));
+
+            Players.Add(new Player(this, "Cyrus"));
+            Players.Add(new Player(this, "Will"));
+            Players.Add(new Player(this, "Piper"));
+            Players.Add(new Player(this, "Bryan"));
+
+            StartGame(new Random());
         }
 
-        public void StartGame()
-        { 
-            NewDay();
+        public void StartGame(Random rng)
+        {
+            // Assign 1 clan to each player
+            List<Clan> avail = Clans.ToList<Clan>();
+            foreach(Player p in Players)
+            {
+                int chosen = rng.Next(avail.Count());
+                p.HiddenClan = avail[chosen];
+                avail.RemoveAt(chosen);
+            }
+            // Distribute Initial Huts
+            for(int gid = 0; gid < 12; gid++)
+            {
+                avail = Clans.ToList<Clan>();
+                for(int i = 0; i < 5; i++)
+                {
+                    int rid = gid * 5 + i;
+                    int chosen = rng.Next(avail.Count());
+                    Regions[rid].AddHut(avail[chosen]);
+
+                }
+            }
+            // Shuffle Player Order
+            Players = Shuffler.Shuffle<Player>(Players,rng).ToObservableCollection<Player>();
+            CurrentPlayer = Players.Last();
+            NewTurn();
         }
         
         public void ResetFlags()
         {
-            ShowAddCardToLot = false;
-            ShowBidOnLot = false;
             ShowContinue = false;
-            ShowStartAuction = false;
-            ShowPassBid = false;
         }
 
-        public void NewDay()
+        public void NewTurn()
         {
-            Day += 1;
-            if (Day == 4)
-            {
-                EndGame();
-                Phase = PHASE.POSTGAME;
-                return;
-            }
-            foreach(Player p in Players)
-            {
-                p.Empty(ResourceDeck);
-            }
-            ShuffleResourceDeck();
-            int lowest_money = Players.Min(p => p.Money);
-            List<Player> Losing = Players.Where(p => p.Money == lowest_money).ToList();
-            var random = new Random();
-            int id = random.Next(Losing.Count());
-            CurrentPlayer = Players[id];
-            StartLotPhase();
+            CurrentPlayer = Players[(CurrentPlayer_id+1) % Players.Count()];
+            // Player to select Origin region
         }
 
-        public void StartLotPhase()
+       
+        public void OnDestination(Region destination)
         {
-            ResetFlags();
-            ShowAddCardToLot = ResourceDeck.DrawPile.Count>0;
-            ShowStartAuction = true;
-            CurrentMode = new LotPhase(this, CurrentPlayer);
-            if (ResourceDeck.DrawPile.Count == 0)
-            {
-                EndDay();
-            } else {
-                AddCardToLot();
-            }
-        }
+            Origin.MoveTo(destination);
+            ObservableCollection<Region> new_villages = FindNewVillages();
 
-        public void AddCardToLot()
-        {
-            Lot.Add(ResourceDeck.Draw());
-            if (Lot.Count() == 3) { ShowAddCardToLot = false; }
-            int emptiest_hold = Players.Min(p => p.Hold.Count());
-            if (emptiest_hold + Lot.Count() == ShipCapacity)
-            {
-                ShowAddCardToLot = false;
-            }
         }
-
-        public void StartAuction()
-        {
-            ResetFlags();
-            CurrentBid = 0;
-            HighBidder = null;
-            CurrentBidder = Players[(CurrentPlayerID + 1) % Players.Count()];
-            SetupBid();
-            ShowPassBid = true;
-        }
-
-        public void SetupBid()
-        {
-            ShowBidOnLot = false;
-            if(CurrentBidder.Money > CurrentBid && (Lot.Count()+CurrentBidder.Hold.Count())<=ShipCapacity)
-            {
-                ShowBidOnLot = true;
-            }
-        }
-
-        public void Bid()
-        {
-            CurrentBid += 1;
-            HighBidder = CurrentBidder;
-            NextBidder();
-        }
-
-        public void PassBid()
-        {
-            NextBidder();
-        }
-
-        public void NextBidder()
-        {
-            if(CurrentBidder==CurrentPlayer)
-            {
-                EndTurn();
-                return;
-            }
-            CurrentBidder = Players[(CurrentBidderID + 1) % Players.Count()];
-            SetupBid();
-        }
-
+        
+        
         public void EndTurn()
         {
-            if (HighBidder != null)
-            {
-                foreach (Card c in Lot)
-                {
-                    HighBidder.Load(c);
-                }
-                Lot.Clear();
-                HighBidder.Money -= CurrentBid;
-            } else
-            {
-                foreach (Card c in Lot)
-                {
-                    ResourceDeck.Discard(c);
-                }
-                Lot.Clear();
-            }
 
-            //Check End Day
-            if (Players.Count(p => p.Hold.Count() < ShipCapacity) == 1)
-            {
-                ResetFlags();
-                EndDay();
-                return;
-
-            }
-
-            CurrentPlayer = Players[(CurrentPlayerID + 1) % Players.Count()];
-            while (CurrentPlayer.Hold.Count() == ShipCapacity)
-            {
-                CurrentPlayer = Players[(CurrentPlayerID + 1) % Players.Count()];
-
-            }
-            StartLotPhase();
+            
+            
         }
-
-        public void EndDay()
-        {
-            // Fill Last Ship
-            Player lastPlayer = Players.First(p => p.Hold.Count() < ShipCapacity);
-            while (lastPlayer.Hold.Count() < ShipCapacity && ResourceDeck.DrawPile.Count>0)
-            {
-                lastPlayer.Load(ResourceDeck.Draw());
-            }
-            Message = lastPlayer.Name + "'s hold filled.";
-            Phase = PHASE.OVERALLVALUE;
-            ShowContinue = true;
-        }
+        
 
 
         public void Continue()
@@ -348,7 +169,7 @@ namespace Engine
             switch (Phase)
             {
                 case PHASE.OVERALLVALUE:
-                    ScoreHoldValue();
+                    ScoreVillage();
                     Phase = PHASE.LEVELADVANCE;
                     break;
                 case PHASE.LEVELADVANCE:
@@ -366,7 +187,7 @@ namespace Engine
                     ScoreBonuses();
                     break;
                 case PHASE.NEXTDAY:
-                    NewDay();
+                    NewTurn();
                     break;
                 case PHASE.POSTGAME:
                     break;
@@ -375,42 +196,15 @@ namespace Engine
             }
         }
 
-        public void ScoreHoldValue()
+
+        public ObservableCollection<Region> FindNewVillages()
         {
-            List<Player> playersByHoldTotal = Players.OrderByDescending(p => p.HoldTotal).ToList();
-            List<Player> recipients = new List<Player>();
-            int pool = 0;
-            int current_best = -1;
-            Message = "Payments for total Hold value:\n";
-            for(int i = 0;  i < playersByHoldTotal.Count; i++)
-            {
-                if (playersByHoldTotal[i].HoldTotal == current_best) // Add this player to current recipients and add points to pool
-                {
-                    recipients.Add(playersByHoldTotal[i]);
-                    pool += GameData.GetHoldReward(i, Players.Count());
-                } else
-                {
-                    if (current_best != -1)
-                    {
-                        foreach(Player r in recipients)
-                        {
-                            int points = (int)pool / recipients.Count();
-                            Message += r.Name + " gets " + points.ToString() + " Florins!\n";
-                            r.Money += points;
-                        }
-                    }
-                    recipients.Clear();
-                    pool = GameData.GetHoldReward(i, Players.Count());
-                    current_best = playersByHoldTotal[i].HoldTotal;
-                    recipients.Add(playersByHoldTotal[i]);
-                }
-            }
-            foreach (Player r in recipients)
-            {
-                int points = (int)pool / recipients.Count();
-                Message += r.Name + " gets " + points.ToString() + " Florins!\n";
-                r.Money += points;
-            }
+            return Regions.Where(r => !r.Empty && !r.Village && r.VillageCheck()).ToObservableCollection<Region>();             
+        }
+
+        public void ScoreVillage(Region region)
+        {
+
         }
 
         private void AdvanceTracks()
@@ -448,7 +242,7 @@ namespace Engine
                         {
                             int points = (int)pool / recipients.Count();
                             Message += r.Name + " gets " + points.ToString() + " Florins!\n";
-                            r.Money += points;
+                            r.Points += points;
                         }
                     }
                     recipients.Clear();
@@ -461,7 +255,7 @@ namespace Engine
             {
                 int points = (int)pool / recipients.Count();
                 Message += r.Name + " gets " + points.ToString() + " Florins!\n";
-                r.Money += points;
+                r.Points += points;
             }
         }
         
@@ -476,7 +270,7 @@ namespace Engine
                     int bonus = GameData.GetTrackBonus(player.Levels[i]);
                     if (bonus > 0)
                     {
-                        player.Money += bonus;
+                        player.Points += bonus;
                         Message = player.Name + " awarded " + bonus.ToString() + " Florins for " + Enum.GetNames(typeof(RESOURCE))[i]+"!\n";
                     }
                 }
@@ -486,17 +280,12 @@ namespace Engine
                 Continue();
             }
         }
-
-        private void ShuffleResourceDeck()
-        {
-            ResourceDeck.Shuffle();
-            ResourceDeck.Burn(GameData.CardsToBurn(Players.Count()));
-        }
+        
 
         private void EndGame()
         {
-            int mostMoney = Players.Max(p => p.Money);
-            List<Player> winners = Players.Where(p => p.Money == mostMoney).ToList() ;
+            int mostMoney = Players.Max(p => p.Points);
+            List<Player> winners = Players.Where(p => p.Points == mostMoney).ToList() ;
             if (winners.Count == 1)
             {
                 Message = winners[0].Name + " wins the game!!!";
@@ -552,7 +341,7 @@ namespace Engine
             switch (field)
             {
                 case "Money":
-                    player.Money += v;
+                    player.Points += v;
                     break;
                 case "Chili":
                     player.Levels[(int)RESOURCE.CHILI] -= v;

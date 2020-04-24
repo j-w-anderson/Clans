@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace Engine.Utils
 {
+    public enum TERRAIN
+    {
+        STEPPE,
+        GRASSLAND,
+        FOREST,
+        MOUNTAIN          
+    }
+
     public enum MODE
     {
         MainAction,

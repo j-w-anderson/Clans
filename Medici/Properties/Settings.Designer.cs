@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Medici.Properties
+namespace Clans.Properties
 {
 
 

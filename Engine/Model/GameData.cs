@@ -11,66 +11,66 @@ namespace PandemicLegacy
 {
     static class GameData
     {
-        static string[,] RegionData = new string[,] {{"14","22","A","FOREST"},
-                                                    {"4","54","B","FOREST"},
-                                                    {"5","94","C","FOREST"},
-                                                    {"45","17","D","FOREST"},
-                                                    {"31","36","E","FOREST"},
-                                                    {"21","72","F","FOREST"},
-                                                    {"36","95","G","FOREST"},
-                                                    {"57","88","G","FOREST"},
-                                                    {"47","40","H","FOREST"},
-                                                    {"46","68","I","FOREST"},
-                                                    {"62","55","I","FOREST"},
-                                                    {"74","86","J","FOREST"},
-                                                    {"66","5","K","FOREST"},
-                                                    {"80","22","K","FOREST"},
-                                                    {"75","65","L","FOREST"},
-                                                    {"10","13","A","GRASSLAND"},
-                                                    {"8","34","B","GRASSLAND"},
-                                                    {"4","75","C","GRASSLAND"},
-                                                    {"16","93","C","GRASSLAND"},
-                                                    {"26","10","D","GRASSLAND"},
-                                                    {"47","7","D","GRASSLAND"},
-                                                    {"38","28","E","GRASSLAND"},
-                                                    {"24","45","E","GRASSLAND"},
-                                                    {"36","55","F","GRASSLAND"},
-                                                    {"43","84","G","GRASSLAND"},
-                                                    {"63","26","H","GRASSLAND"},
-                                                    {"54","61","I","GRASSLAND"},
-                                                    {"64","80","J","GRASSLAND"},
-                                                    {"79","6","K","GRASSLAND"},
-                                                    {"80","46","L","GRASSLAND"},
-                                                    {"17","6","A","MOUNTAIN"},
-                                                    {"5","24","A","MOUNTAIN"},
-                                                    {"14","48","B","MOUNTAIN"},
-                                                    {"14","75","C","MOUNTAIN"},
-                                                    {"57","10","D","MOUNTAIN"},
-                                                    {"36","43","E","MOUNTAIN"},
-                                                    {"29","67","F","MOUNTAIN"},
-                                                    {"49","95","G","MOUNTAIN"},
-                                                    {"49","28","H","MOUNTAIN"},
-                                                    {"63","44","H","MOUNTAIN"},
-                                                    {"60","68","I","MOUNTAIN"},
-                                                    {"81","94","J","MOUNTAIN"},
-                                                    {"73","13","K","MOUNTAIN"},
-                                                    {"78","33","L","MOUNTAIN"},
-                                                    {"79","56","L","MOUNTAIN"},
-                                                    {"5","5","A","STEPPE"},
-                                                    {"5","43","B","STEPPE"},
-                                                    {"6","63","B","STEPPE"},
-                                                    {"9","85","C","STEPPE"},
-                                                    {"36","6","D","STEPPE"},
-                                                    {"23","28","E","STEPPE"},
-                                                    {"25","59","F","STEPPE"},
-                                                    {"37","72","F","STEPPE"},
-                                                    {"25","90","G","STEPPE"},
-                                                    {"56","35","H","STEPPE"},
-                                                    {"48","55","I","STEPPE"},
-                                                    {"66","94","J","STEPPE"},
-                                                    {"78","76","J","STEPPE"},
-                                                    {"69","20","K","STEPPE"},
-                                                    {"71","46","L","STEPPE"} };
+        static string[,] RegionData = new string[,] {{"0","5","5","0","STEPPE","1,2,3"},
+                                                    {"1","17","6","0","MOUNTAIN","0,2,4,5"},
+                                                    {"2","10","13","0","GRASSLAND","0,1,3,4"},
+                                                    {"3","5","24","0","MOUNTAIN","0,2,4,15"},
+                                                    {"4","14","22","0","FOREST","1,2,3,5,15,20"},
+                                                    {"5","26","10","1","GRASSLAND","1,4,6,9,20"},
+                                                    {"6","36","6","1","STEPPE","5,7,9"},
+                                                    {"7","47","7","1","GRASSLAND","6,8,9"},
+                                                    {"8","57","10","1","MOUNTAIN","7,9,10,26,13"},
+                                                    {"9","45","17","1","FOREST","5,6,7,8,22,25"},
+                                                    {"10","66","5","2","FOREST","8,11,12,13"},
+                                                    {"11","79","6","2","GRASSLAND","10,12,14"},
+                                                    {"12","73","13","2","MOUNTAIN","10,11,13,14"},
+                                                    {"13","69","20","2","STEPPE","8,10,12,14,26,30"},
+                                                    {"14","80","22","2","FOREST","11,12,13,30"},
+                                                    {"15","8","34","3","GRASSLAND","3,4,20,16,17"},
+                                                    {"16","5","43","3","STEPPE","15,17,18"},
+                                                    {"17","14","48","3","MOUNTAIN","15,16,18,19,23,35"},
+                                                    {"18","4","54","3","FOREST","16,17,19"},
+                                                    {"19","6","63","3","STEPPE","17,18,37,45,46"},
+                                                    {"20","23","28","4","STEPPE","4,5,15,21,23"},
+                                                    {"21","31","36","4","FOREST","20,22,23,24"},
+                                                    {"22","38","28","4","GRASSLAND","9,21,24,25"},
+                                                    {"23","24","45","4","GRASSLAND","17,20,21,24,35"},
+                                                    {"24","36","43","4","MOUNTAIN","21,22,23,27,36"},
+                                                    {"25","49","28","5","MOUNTAIN","9,22,26,27,28"},
+                                                    {"26","63","26","5","GRASSLAND","8,13,25,28,29,30"},
+                                                    {"27","47","40","5","FOREST","24,25,28,36,40"},
+                                                    {"28","56","35","5","STEPPE","25,26,27,29"},
+                                                    {"29","63","44","5","MOUNTAIN","26,28,31,41"},
+                                                    {"30","78","33","6","MOUNTAIN","13,14,26,31,32"},
+                                                    {"31","71","46","6","STEPPE","29,30,32,33,34,41"},
+                                                    {"32","80","46","6","GRASSLAND","30,31,33"},
+                                                    {"33","79","56","6","MOUNTAIN","31,32,34"},
+                                                    {"34","75","65","6","FOREST","31,33,44,55,56"},
+                                                    {"35","25","59","7","STEPPE","17,23,36,37,38"},
+                                                    {"36","36","55","7","GRASSLAND","24,27,35,38,39,40"},
+                                                    {"37","21","72","7","FOREST","19,35,38,39,46,51"},
+                                                    {"38","29","67","7","MOUNTAIN","35,36,37,39"},
+                                                    {"39","37","72","7","STEPPE","36,38,37,43,50"},
+                                                    {"40","48","55","8","STEPPE","27,36,41,42,43"},
+                                                    {"41","62","55","8","FOREST","29,31,40,42,44"},
+                                                    {"42","54","61","8","GRASSLAND","40,41,43,44"},
+                                                    {"43","46","68","8","FOREST","39,40,42,44,50"},
+                                                    {"44","60","68","8","MOUNTAIN","34,41,42,43,54,55"},
+                                                    {"45","4","75","9","GRASSLAND","19,46,47,48"},
+                                                    {"46","14","75","9","MOUNTAIN","19,37,45,47,49,51"},
+                                                    {"47","9","85","9","STEPPE","45,46,48,49"},
+                                                    {"48","5","94","9","FOREST","45,47,49"},
+                                                    {"49","16","93","9","GRASSLAND","46,47,48,51"},
+                                                    {"50","43","84","10","GRASSLAND","39,43,51,52,53,54"},
+                                                    {"51","25","90","10","STEPPE","37,46,49,50,52"},
+                                                    {"52","36","95","10","FOREST","50,51,53"},
+                                                    {"53","49","95","10","MOUNTAIN","50,52,54"},
+                                                    {"54","57","88","10","FOREST","44,50,53,55,58"},
+                                                    {"55","64","80","11","GRASSLAND","34,44,54,56,57,58"},
+                                                    {"56","78","76","11","STEPPE","34,55,57,59"},
+                                                    {"57","74","86","11","FOREST","55,56,58,59"},
+                                                    {"58","66","94","11","STEPPE","54,55,57,59"},
+                                                    {"59","81","94","11","MOUNTAIN","56,57,58"}};
 
         static double[,] ScoreTrack = new double[,] {{85.8,-92.6},
                                                     {85.8,-88.5272727272727},
@@ -136,157 +136,39 @@ namespace PandemicLegacy
                                                 {4,1,92,-81},
                                                 {5,0,92,-92}};
 
-        static string[,] CityData = new string[,] {{"Kairo","2","3","707","356","Khartum","Algier","Istanbul","Riad","Bagdad",""},
-                                                    {"Algier","2","3","638","347","Kairo","Madrid","Paris","Istanbul","",""},
-                                                    {"Bagdad","4","3","773","331","Kairo","Riad","Istanbul","Teheran","",""},
-                                                    {"Teheran","4","3","833","282","Moskau","Bagdad","Delhi","Karatschi","",""},
-                                                    {"Riad","4","3","782","397","Bagdad","Kairo","Karatschi","","",""},
-                                                    {"Karatschi","4","3","846","355","Mumbai","Delhi","Teheran","Riad","",""},
-                                                    {"Delhi","4","3","903","331","Teheran","Karatschi","Mumbai","Kalkutta","Chennai",""},
-                                                    {"Mumbai","4","3","852","413","Delhi","Chennai","Karatschi","","",""},
-                                                    {"Chennai","4","3","909","450","Mumbai","Delhi","Kalkutta","Jakarta","",""},
-                                                    {"Kalkutta","4","3","956","353","Delhi","Chennai","Bangkok","Hong Kong","",""},
-                                                    {"Istanbul","3","3","718","291","Mailand","Algier","Bagdad","Moskau","Kairo","St Petersburg"},
-                                                    {"Moskau","3","3","780","247","St Petersburg","Istanbul","Teheran","","",""},
-                                                    {"Madrid","3","2","562","296","New York","London","Paris","Sao Paulo","Algier",""},
-                                                    {"London","3","2","573","223","New York","Madrid","Paris","Essen","",""},
-                                                    {"Essen","3","2","651","209","London","Paris","Mailand","St Petersburg","",""},
-                                                    {"Paris","3","2","631","261","London","Madrid","Essen","Mailand","Algier",""},
-                                                    {"Mailand","3","2","682","246","Essen","Paris","Istanbul","","",""},
-                                                    {"St Petersburg","3","2","739","192","Essen","Istanbul","Moskau","","",""},
-                                                    {"San Francisco","0","2","195","292","Chicago","Los Angeles","Tokyo","Manila","",""},
-                                                    {"Chicago","0","2","295","262","San Francisco","Atlanta","Montreal","Mexiko-Stadt","Los Angeles",""},
-                                                    {"Atlanta","0","2","325","319","Chicago","Washington","Miami","","",""},
-                                                    {"Washington","0","2","415","315","Atlanta","New York","Montreal","Miami","",""},
-                                                    {"New York","0","2","429","270","Madrid","London","Montreal","Washington","",""},
-                                                    {"Montreal","0","2","374","262","Chicago","New York","Washington","","",""},
-                                                    {"Bangkok","4","1","968","416","Kalkutta","Hong Kong","Ho-Chi-Minh-Stadt","Jakarta","",""},
-                                                    {"Hong Kong","4","1","1010","389","Ho-Chi-Minh-Stadt","Shanghai","Bangkok","Kalkutta","Taipeh","Manila"},
-                                                    {"Seoul","4","1","1069","258","Tokyo","Shanghai","Peking","","",""},
-                                                    {"Peking","4","1","1003","264","Shanghai","Seoul","","","",""},
-                                                    {"Shanghai","4","1","1005","319","Hong Kong","Peking","Taipeh","Seoul","Tokyo",""},
-                                                    {"Jakarta","5","1","968","517","Chennai","Bangkok","Ho-Chi-Minh-Stadt","Sydney","",""},
-                                                    {"Ho-Chi-Minh-Stadt","5","1","1014","469","Manila","Hong Kong","Bangkok","Jakarta","",""},
-                                                    {"Sydney","5","1","1137","621","Los Angeles","Manila","Jakarta","","",""},
-                                                    {"Manila","5","1","1091","464","Ho-Chi-Minh-Stadt","Sydney","San Francisco","Taipeh","Hong Kong",""},
-                                                    {"Taipeh","5","1","1088","352","Osaka","Manila","Hong Kong","Shanghai","",""},
-                                                    {"Osaka","5","1","1131","351","Tokyo","Taipeh","","","",""},
-                                                    {"Tokyo","5","1","1124","290","Osaka","Seoul","Shanghai","San Francisco","",""},
-                                                    {"Lagos","2","0","623","447","Kinshasa","Khartum","Sao Paulo","","",""},
-                                                    {"Kinshasa","2","0","676","500","Lagos","Khartum","Johannesburg","","",""},
-                                                    {"Khartum","2","0","722","434","Lagos","Kinshasa","Johannesburg","Kairo","",""},
-                                                    {"Johannesburg","2","0","720","580","Buenos Aires","Kinshasa","Khartum","","",""},
-                                                    {"Los Angeles","0","0","212","369","San Francisco","Mexiko-Stadt","Chicago","Lima","Sydney",""},
-                                                    {"Miami","0","0","369","368","Atlanta","Washington","Mexiko-Stadt","Bogota","",""},
-                                                    {"Mexiko-Stadt","0","0","283","392","Los Angeles","Bogota","Miami","Lima","Chicago",""},
-                                                    {"Bogota","1","0","367","458","Mexiko-Stadt","Lima","Sao Paulo","Buenos Aires","Miami",""},
-                                                    {"Lima","1","0","340","542","Santiago","Bogota","Mexiko-Stadt","Los Angeles","",""},
-                                                    {"Santiago","1","0","350","627","Lima","Buenos Aires","","","",""},
-                                                    {"Buenos Aires","1","0","432","616","Santiago","Sao Paulo","Bogota","Johannesburg","",""},
-                                                    {"Sao Paulo","1","0","476","552","Lagos","Madrid","Bogota","Buenos Aires","",""} };
+        
 
 
-        public static List<City> GetCities()
+        public static List<Region> GetRegions()
         {
-            List<City> cities = new List<City>();
-            for (int i = 0; i < 48; i++)
+            List<Region> regions = new List<Region>();
+            for (int i = 0; i < 60; i++)
             {
-                cities.Add(new City(CityData[i, 0], (ELEMENT)Convert.ToInt16(CityData[i, 2]), (REGION)Convert.ToInt16(CityData[i, 1]), new Point(Convert.ToDouble(CityData[i, 3]), Convert.ToDouble(CityData[i, 4]))));
+                regions.Add(new Region(int.Parse(RegionData[i, 0]),
+                                       int.Parse(RegionData[i, 3]),
+                                       new Point(double.Parse(RegionData[i, 1]), double.Parse(RegionData[i, 2])),
+                                       (TERRAIN)Enum.Parse(typeof(TERRAIN),RegionData[i, 4])));
             }
-            for (int i = 0; i < 48; i++)
+            for (int i = 0; i < 60; i++)
             {
-                for (int j = 5; j < 11; j++)
+                List<string> rids = new List<string>(RegionData[i, 5].Split(','));
+                foreach(string rid in rids)
                 {
-                    if (CityData[i, j] != "")
-                    {
-                        City adj = cities.FirstOrDefault(c => c.Name == CityData[i, j]);
-                        if (adj == null)
-                        {
-                            throw new Exception();
-                        }
-                        cities[i].AddAdjacent(adj);
-                    }
+                    regions[i].AddAdj(regions[int.Parse(rid)]);
                 }
             }
-            return cities;
+            return regions;
         }
+        
 
-        public static ObservableCollection<Path> GetPaths(ObservableCollection<City> cities)
+        public static List<Clan> GetClans()
         {
-            ObservableCollection<Path> result = new ObservableCollection<Path>();
-            List<City> Visited = new List<City>();
-            foreach (City c1 in cities)
+            List<Clan> clans = new List<Clan>();
+            for (int i = 0; i < 5; i++)
             {
-                Visited.Add(c1);
-                foreach (City c2 in c1.Adjacent)
-                {
-                    if (!Visited.Contains(c2))
-                    {
-                        result.Add(new Path(c1, c2));
-                    }
-                }
+                clans.Add(new Clan(i));
             }
-            return result;
-        }
-
-        public static Deck BuildResourceDeck()
-        {
-            ObservableCollection<Card> cards = new ObservableCollection<Card>();
-            List<RESOURCE> resources = new List<RESOURCE> { RESOURCE.TEA, RESOURCE.CHILI, RESOURCE.INDIGO, RESOURCE.PEPPER, RESOURCE.SAFFRON };
-            List<int> values = new List<int> { 0, 1, 2, 3, 4, 5, 5 };
-            foreach (RESOURCE r in resources)
-            {
-                foreach (int v in values)
-                {
-                    cards.Add(new Card(r, v));
-                }
-            }
-            cards.Add(new Card(RESOURCE.GOLD, 10));
-
-            return new Deck(cards);
-        }
-
-        public static List<int> BurnCount = new List<int> { 18, 18, 12, 6, 0 };
-
-        public static int CardsToBurn(int nplayers)
-        {
-            return BurnCount[nplayers - 2];
-        }
-
-
-        static int[,] HoldRewards = new int[,] {{20, 0, 0, 0, 0, 0 },
-                                                {30,15, 0, 0, 0, 0 },
-                                                {30,20,10, 0, 0, 0 },
-                                                {30,20,10, 5, 0, 0 },
-                                                {30,20,15,10, 5, 0 } };
-
-        public static int GetHoldReward(int rank, int nplayers)
-        {
-            return HoldRewards[nplayers - 2, rank];
-        }
-
-        static int[] TrackRewards = new int[] { 10, 5 };
-
-        public static int GetTrackReward(int rank, int nplayers)
-        {
-            if (rank == 0) { return 10; }
-            if (rank == 1 && nplayers != 2) { return 5; }
-            return 0;
-        }
-
-        public static int GetTrackBonus(int level)
-        {
-            switch (level)
-            {
-                case 0:
-                    return 20;
-                case 1:
-                    return 10;
-                case 2:
-                    return 5;
-                default:
-                    return 0;
-            }
+            return (clans);
         }
     }
 }

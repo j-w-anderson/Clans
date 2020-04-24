@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Medici
+namespace Clans
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -76,26 +76,7 @@ namespace Medici
             string name = target.Tag.ToString();
             gameSession.Adjust(name, "Tea", 1);
         }
-
-        private void AddToLot_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.AddCardToLot();
-        }
-
-        private void StartAuction_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.StartAuction();
-        }
-        private void Bid_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.Bid();
-        }
-
-        private void PassBid_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.PassBid();
-        }
-
+        
 
         private void Continue_Click(object sender, RoutedEventArgs e)
         {

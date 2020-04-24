@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace Medici
+namespace Clans
 {
 
     public class InfectionTrackXConverter : IValueConverter

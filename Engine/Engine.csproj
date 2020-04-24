@@ -49,7 +49,9 @@
     <Compile Include="Model\Deck.cs" />
     <Compile Include="Model\EventCards.cs" />
     <Compile Include="Model\LegacyDeck.cs" />
+    <Compile Include="Model\Clan.cs" />
     <Compile Include="Model\Roles\OpExpert.cs" />
+    <Compile Include="Model\Region.cs" />
     <Compile Include="Model\Roles\Scientist.cs" />
     <Compile Include="Model\Roles\Medic.cs" />
     <Compile Include="Model\Roles\Generalist.cs" />
