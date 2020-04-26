@@ -1,4 +1,5 @@
-﻿using Engine.Utils;
+﻿using Engine.Model;
+using Engine.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,14 @@ namespace Engine
             OnPropertyChanged(nameof(ShowBidOnLot));
             OnPropertyChanged(nameof(ShowPassBid));
             OnPropertyChanged(nameof(ShowContinue));
+        }
+
+        public void DeselectRegions()
+        {
+            foreach (Region region in Game.Regions)
+            {
+                region.Selectable = false;
+            }
         }
     }
 }

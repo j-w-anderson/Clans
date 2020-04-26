@@ -29,6 +29,18 @@ namespace Engine.Model
 
         public bool Empty => Huts.Max() == 0;
 
+        private bool _selectable;
+        public bool Selectable
+        {
+            get { return _selectable; }
+            set
+            {
+                _selectable = value;
+                OnPropertyChanged(nameof(Selectable));
+            }
+        }
+
+
         public Region(int rid, int gid, Point coords, TERRAIN terrain)
         {
             Coords = coords;
@@ -68,6 +80,18 @@ namespace Engine.Model
             OnPropertyChanged(nameof(Empty));
         }
 
+        public bool IsValidOrigin()
+        {
+            // Valid origin regions are
+            // 1) Not empty
+            // 2) Not already villages
+            // 3a) Have fewer than 7 huts, or
+            // 3b) Have the same number or fewer huts than a neighbor
+            if(Empty || Village) { return false; }
+            if (Huts.Sum() < 7 || Huts.Sum() <= Adj.Max(r => r.Huts.Sum())) { return true; }
+            return false;
+        }
+
         public ObservableCollection<Region> GetDestinations()
         {
             // Get all possible destinations from this region
@@ -84,5 +108,26 @@ namespace Engine.Model
             }
             return destinations;
         }
+
+        public List<int> GetScores(TERRAIN boon, TERRAIN barren, int bonus)
+        {
+            List<int> points = new List<int> { 0, 0, 0, 0, 0 };
+            Village = true;
+            if (barren == Terrain) { return points; }
+
+            // Clans battle if all are present
+            int tiny = Huts.Min();
+            Huts.Select(h => h - tiny);
+
+            // Remaining clans score
+            for(int cid = 0; cid < 5; cid++)
+            {
+                if (Huts[cid] > 0) { points[cid] = Huts.Sum() + bonus; }
+            }
+
+            return points;
+
+        }
+
     }
 }

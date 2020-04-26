@@ -23,6 +23,9 @@ namespace Engine
         public ObservableCollection<Player> Players { get; set; } = new ObservableCollection<Player>();
         public ObservableCollection<Region> Regions { get; set; } = new ObservableCollection<Region>();
         public ObservableCollection<Clan> Clans { get; set; } = new ObservableCollection<Clan>();
+
+        public ObservableCollection<Region> NewVillages { get; set; } = new ObservableCollection<Region>();
+
         //public Supply Supply = new Supply();
         public int CurrentPhaseID = 0;
         public PHASE Phase;
@@ -86,8 +89,20 @@ namespace Engine
             set { _origin = value; }
         }
 
+        private UIMode _uimode;
 
-        public UIMode CurrentMode { get; set; }
+        public UIMode CurrentMode
+        {
+            get
+            {
+                return _uimode;
+            }
+            set
+            {
+                _uimode = value;
+                OnPropertyChanged(nameof(UIMode));
+            }
+        }
 
         public ObservableCollection<Card> Lot = new ObservableCollection<Card>();
 
@@ -96,7 +111,7 @@ namespace Engine
             CurrentMode = new UIMode(this);
 
             Regions = GameData.GetRegions().ToObservableCollection<Region>();
-            Clans = GameData.GetClans().ToObservableColletion<Clan>();
+            Clans = GameData.GetClans().ToObservableCollection<Clan>();
 
 
             Players.Add(new Player(this, "Cyrus"));
@@ -144,17 +159,81 @@ namespace Engine
         {
             CurrentPlayer = Players[(CurrentPlayer_id+1) % Players.Count()];
             // Player to select Origin region
+            CurrentMode = new SelectOrigin(this);
         }
 
-       
+        public void OnOrigin(Region origin)
+        {
+            Origin = origin;
+            CurrentMode = new SelectDestination(this,Origin);
+        }
+
         public void OnDestination(Region destination)
         {
             Origin.MoveTo(destination);
-            ObservableCollection<Region> new_villages = FindNewVillages();
+            NewVillages = FindNewVillages();
+            ScoreNewVillages();
+        }
+
+        public void ScoreNewVillages()
+        { 
+            if (NewVillages.Count() == 0)
+            {
+                NewTurn();
+                return;
+            } else if(NewVillages.Count()==1)
+            {
+                // Maybe should be a mode so UI can pause during scoring...
+                // probably the UI should listen for a scoring event and pause on its own?
+                ScoreVillage(NewVillages[0]);
+            } else
+            {
+                CurrentMode = new SelectVillage(this, NewVillages);
+            }
+        }
+
+        public void ScoreVillage(Region village)
+        {
+            TERRAIN boon = GameData.GetBonusTerrain(Chips);
+            TERRAIN barren = GameData.GetBarrenTerrain(Chips);
+            int bonus = GameData.GetBonus(Chips);
+            Chips -= 1;
+
+            List<int> points = village.GetScores(boon,barren,bonus);
+            for(int cid = 0; cid < 5; cid++)
+            {
+                Clans[cid].Points += points[cid];
+            }
+        }
+
+        public void OnVillage(Region village)
+        {
+            NewVillages.Remove(village);
+            ScoreVillage(village);
+            if (Chips == 0)
+            {
+                EndGame();
+            }
+            else
+            {
+                ScoreNewVillages();
+            }
+        }
+
+        public void OnScoreContinue()
+        {
+            if (NewVillages.Count() == 0)
+            {
+                NewTurn();
+            } else
+            {
+                CurrentMode = new SelectVillage(this, NewVillages);
+            }
 
         }
         
-        
+
+
         public void EndTurn()
         {
 
@@ -164,123 +243,13 @@ namespace Engine
         
 
 
-        public void Continue()
-        {
-            switch (Phase)
-            {
-                case PHASE.OVERALLVALUE:
-                    ScoreVillage();
-                    Phase = PHASE.LEVELADVANCE;
-                    break;
-                case PHASE.LEVELADVANCE:
-                    AdvanceTracks();
-                    Phase = PHASE.LEVELWINNERS;
-                    Step = 0;
-                    break;
-                case PHASE.LEVELWINNERS:
-                    ScoreResource(Step);
-                    Step += 1;
-                    if (Step == 5) { Phase = PHASE.LEVELBONUS; }
-                    break;
-                case PHASE.LEVELBONUS:
-                    Phase = PHASE.NEXTDAY;
-                    ScoreBonuses();
-                    break;
-                case PHASE.NEXTDAY:
-                    NewTurn();
-                    break;
-                case PHASE.POSTGAME:
-                    break;
-                default:
-                    break;
-            }
-        }
-
 
         public ObservableCollection<Region> FindNewVillages()
         {
             return Regions.Where(r => !r.Empty && !r.Village && r.VillageCheck()).ToObservableCollection<Region>();             
         }
 
-        public void ScoreVillage(Region region)
-        {
 
-        }
-
-        private void AdvanceTracks()
-        {
-            foreach(Player player in Players)
-            {
-                foreach (Card card in player.Hold)
-                {
-                    player.Advance(card.Resource);
-                }
-            }
-            Message = "Commodity Levels Increased!";
-        }
-
-
-        public void ScoreResource(int step)
-        {
-            List<Player> playersByLevel = Players.OrderBy(p => p.Levels[step]).ToList();
-            List<Player> recipients = new List<Player>();
-            int pool = 0;
-            int current_best = -1;
-            Message = "Payments for " + Enum.GetNames(typeof(RESOURCE))[step].ToLower() + ":\n";
-            for (int i = 0; i < playersByLevel.Count; i++)
-            {
-                if (playersByLevel[i].Levels[step] == current_best) // Add this player to current recipients and add points to pool
-                {
-                    recipients.Add(playersByLevel[i]);
-                    pool += GameData.GetTrackReward(i, Players.Count());
-                }
-                else
-                {
-                    if (current_best != -1)
-                    {
-                        foreach (Player r in recipients)
-                        {
-                            int points = (int)pool / recipients.Count();
-                            Message += r.Name + " gets " + points.ToString() + " Florins!\n";
-                            r.Points += points;
-                        }
-                    }
-                    recipients.Clear();
-                    pool = GameData.GetTrackReward(i, Players.Count());
-                    current_best = playersByLevel[i].Levels[step];
-                    recipients.Add(playersByLevel[i]);
-                }
-            }
-            foreach (Player r in recipients)
-            {
-                int points = (int)pool / recipients.Count();
-                Message += r.Name + " gets " + points.ToString() + " Florins!\n";
-                r.Points += points;
-            }
-        }
-        
-        private void ScoreBonuses()
-        {
-            bool anyAwards = false;
-            Message = "Resource Bonuses Awarded:\n";
-            foreach(Player player in Players)
-            {
-                for(int i = 0; i < 5; i++)
-                {
-                    int bonus = GameData.GetTrackBonus(player.Levels[i]);
-                    if (bonus > 0)
-                    {
-                        player.Points += bonus;
-                        Message = player.Name + " awarded " + bonus.ToString() + " Florins for " + Enum.GetNames(typeof(RESOURCE))[i]+"!\n";
-                    }
-                }
-            }
-            if (anyAwards == false)
-            {
-                Continue();
-            }
-        }
-        
 
         private void EndGame()
         {
@@ -334,37 +303,7 @@ namespace Engine
         }
 
 
-        public void Adjust(string name, string field, int v)
-        {
-            Player player = Players.FirstOrDefault(p => p.Name == name);
-            if (player == null) { return; }
-            switch (field)
-            {
-                case "Money":
-                    player.Points += v;
-                    break;
-                case "Chili":
-                    player.Levels[(int)RESOURCE.CHILI] -= v;
-                    break;
-                case "Indigo":
-                    player.Levels[(int)RESOURCE.INDIGO] -= v;
-                    break;
-                case "Pepper":
-                    player.Levels[(int)RESOURCE.PEPPER] -= v;
-                    break;
-                case "Saffron":
-                    player.Levels[(int)RESOURCE.SAFFRON] -= v;
-                    break;
-                case "Tea":
-                    player.Levels[(int)RESOURCE.TEA] -= v;
-                    break;
-                default:
-                    break;
-            }
-
-        }
-
-     
+      
 
         public void SaveGame()
         {

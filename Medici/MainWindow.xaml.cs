@@ -35,52 +35,9 @@ namespace Clans
             //Lot_IC.ItemsSource = gameSession.Lot;
             //Discards_IC.ItemsSource = gameSession.ResourceDeck.DiscardPile;
 
-            gameSession.StartGame();
+            gameSession.StartGame(new Random());
             //FundedEventSelection_IC.ItemsSource = gameSession.AvailableEvents;
         }
         
-        private void Money_Up(object sender, RoutedEventArgs e)
-        {
-            Button target = sender as Button;
-            string name = target.Tag.ToString();
-            gameSession.Adjust(name, "Money", 1);
-        }
-
-        private void Chili_Up(object sender, RoutedEventArgs e)
-        {
-            Button target = sender as Button;
-            string name = target.Tag.ToString();
-            gameSession.Adjust(name, "Chili", 1);
-        }
-        private void Indigo_Up(object sender, RoutedEventArgs e)
-        {
-            Button target = sender as Button;
-            string name = target.Tag.ToString();
-            gameSession.Adjust(name, "Indigo", 1);
-        }
-        private void Pepper_Up(object sender, RoutedEventArgs e)
-        {
-            Button target = sender as Button;
-            string name = target.Tag.ToString();
-            gameSession.Adjust(name, "Pepper", 1);
-        }
-        private void Saffron_Up(object sender, RoutedEventArgs e)
-        {
-            Button target = sender as Button;
-            string name = target.Tag.ToString();
-            gameSession.Adjust(name, "Saffron", 1);
-        }
-        private void Tea_Up(object sender, RoutedEventArgs e)
-        {
-            Button target = sender as Button;
-            string name = target.Tag.ToString();
-            gameSession.Adjust(name, "Tea", 1);
-        }
-        
-
-        private void Continue_Click(object sender, RoutedEventArgs e)
-        {
-            gameSession.Continue();
-        }
     }
 }

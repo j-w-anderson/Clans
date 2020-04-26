@@ -69,8 +69,10 @@
     <Compile Include="Model\Disease.cs" />
     <Compile Include="ViewModel\GameModes\LotPhase.cs" />
     <Compile Include="ViewModel\GameModes\AuctionPhase.cs" />
+    <Compile Include="ViewModel\GameModes\SelectVillage.cs" />
     <Compile Include="ViewModel\GameModes\SelectEventCard.cs" />
-    <Compile Include="ViewModel\GameModes\SelectPlayer.cs" />
+    <Compile Include="ViewModel\GameModes\SelectDestination.cs" />
+    <Compile Include="ViewModel\GameModes\SelectOrigin.cs" />
     <Compile Include="ViewModel\GameSession.cs" />
     <Compile Include="ViewModel\GameModes\UIMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

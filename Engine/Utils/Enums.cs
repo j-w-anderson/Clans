@@ -11,7 +11,8 @@ namespace Engine.Utils
         STEPPE,
         GRASSLAND,
         FOREST,
-        MOUNTAIN          
+        MOUNTAIN,  
+        LAKE
     }
 
     public enum MODE

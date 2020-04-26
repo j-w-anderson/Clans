@@ -72,6 +72,33 @@ namespace PandemicLegacy
                                                     {"58","66","94","11","STEPPE","54,55,57,59"},
                                                     {"59","81","94","11","MOUNTAIN","56,57,58"}};
 
+        internal static int GetBonus(int chips)
+        {
+            if (chips >= 9) { return 1; }
+            if (chips >= 6) { return 2; }
+            if (chips >= 4) { return 3; }
+            if (chips >= 2) { return 4; }
+            return 5;
+        }
+
+        internal static TERRAIN GetBarrenTerrain(int chips)
+        {
+            if (chips >= 9) { return TERRAIN.MOUNTAIN; }
+            if (chips >= 6) { return TERRAIN.GRASSLAND; }
+            if (chips >= 4) { return TERRAIN.FOREST; }
+            if (chips >= 2) { return TERRAIN.STEPPE; }
+            return TERRAIN.LAKE;
+        }
+
+        internal static TERRAIN GetBonusTerrain(int chips)
+        {
+            if (chips >= 9) { return TERRAIN.FOREST; }
+            if (chips >= 6) { return TERRAIN.MOUNTAIN; }
+            if (chips >= 4) { return TERRAIN.STEPPE; }
+            if (chips >= 2) { return TERRAIN.GRASSLAND; }
+            return TERRAIN.LAKE;
+        }
+
         static double[,] ScoreTrack = new double[,] {{85.8,-92.6},
                                                     {85.8,-88.5272727272727},
                                                     {85.8,-84.4545454545455},
