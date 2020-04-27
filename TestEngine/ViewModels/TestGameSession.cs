@@ -2,6 +2,8 @@
 using Engine;
 using Engine.ViewModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 
 namespace TestEngine.ViewModels
 {
@@ -9,29 +11,26 @@ namespace TestEngine.ViewModels
     public class TestGameSession
     {
         [TestMethod]
-        public void DeckSizeTest()
+        public void InitialDistributionTest()
         {
             GameSession gameSession = new GameSession();
-            Assert.AreEqual(36,gameSession.ResourceDeck.DrawPile.Count);
+            gameSession.DistributeHuts(new Random());
+            Assert.IsTrue(gameSession.Regions.All(r => r.Huts.Sum() == 1));
         }
 
         [TestMethod]
-        public void BurnTest()
-        { 
-            GameSession gameSession = new GameSession();
-            gameSession.ResourceDeck.Burn(10);
-            Assert.AreEqual(26,gameSession.ResourceDeck.DrawPile.Count);
-            Assert.AreEqual(gameSession.ResourceDeck.BurnPile.Count, 10);
-        }
-
-        [TestMethod]
-        public void BurnThenShuffleTest()
+        public void IntialChipTest()
         {
             GameSession gameSession = new GameSession();
-            gameSession.ResourceDeck.Burn(10);
-            gameSession.ResourceDeck.Shuffle();
-            Assert.AreEqual(36,gameSession.ResourceDeck.DrawPile.Count);
-            Assert.AreEqual(0,gameSession.ResourceDeck.BurnPile.Count);
+            Assert.AreEqual(12, gameSession.Chips);
+        }
+
+
+        [TestMethod]
+        public void IntialScoreTest()
+        {
+            GameSession gameSession = new GameSession();
+            Assert.IsTrue(gameSession.Players.All(p=>p.Points==0));
         }
     }
 }

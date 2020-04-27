@@ -132,23 +132,30 @@ namespace Engine
                 p.HiddenClan = avail[chosen];
                 avail.RemoveAt(chosen);
             }
-            // Distribute Initial Huts
-            for(int gid = 0; gid < 12; gid++)
-            {
-                avail = Clans.ToList<Clan>();
-                for(int i = 0; i < 5; i++)
-                {
-                    int rid = gid * 5 + i;
-                    int chosen = rng.Next(avail.Count());
-                    Regions[rid].AddHut(avail[chosen]);
-
-                }
-            }
             // Shuffle Player Order
             Players = Shuffler.Shuffle<Player>(Players,rng).ToObservableCollection<Player>();
             CurrentPlayer = Players.Last();
             NewTurn();
         }
+        
+        public void DistributeHuts(Random rng)
+        {
+
+            // Distribute Initial Huts
+            List<Clan> avail = Clans.ToList<Clan>();
+            for (int gid = 0; gid < 12; gid++)
+            {
+                avail = Clans.ToList<Clan>();
+                for (int i = 0; i < 5; i++)
+                {
+                    int rid = gid * 5 + i;
+                    int chosen = rng.Next(avail.Count());
+                    Regions[rid].AddHut(avail[chosen]);
+                    avail.RemoveAt(chosen);
+                }
+            }
+        }
+        
         
         public void ResetFlags()
         {
