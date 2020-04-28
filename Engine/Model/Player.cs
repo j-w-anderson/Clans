@@ -17,7 +17,7 @@ namespace Engine
         public GameSession Game { get; set; }
         public Clan HiddenClan { get; set; }
         public string Name { get; set; }
-        
+
         private bool _active;
 
         public bool Active
@@ -40,23 +40,12 @@ namespace Engine
                 OnPropertyChanged(nameof(Points));
             }
         }
-                
-       
+
+
         public Player(GameSession game, string name)
         {
             Game = game;
             Name = name;
         }
-
-
-        
-        public void EndMainPhase()
-        {
-            Game.EndTurn();
-        }
-        
-        
-        
-        
     }
 }

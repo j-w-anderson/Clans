@@ -13,6 +13,7 @@ namespace Engine
 
         public SelectDestination(GameSession game, Region origin) : base(game)
         {
+            Name = "SelectDistination";
             DeselectRegions();
             foreach (Region region in origin.GetDestinations())
             {

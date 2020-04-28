@@ -12,6 +12,7 @@ namespace Engine
     {
         public SelectOrigin(GameSession game) : base(game)
         {
+            Name = "SelectOrigin";
             Game = game;
             foreach(Region region in Game.Regions)
             {

@@ -1,4 +1,5 @@
 ﻿using Engine;
+using Engine.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,12 @@ namespace Clans
             gameSession.StartGame(new Random());
             //FundedEventSelection_IC.ItemsSource = gameSession.AvailableEvents;
         }
-        
+
+        private void Select_Region_Click(object sender, RoutedEventArgs e)
+        {
+            Button S = sender as Button;
+            int RID = (int)S.Tag;
+            gameSession.OnSelectRegion(RID);
+        }
     }
 }

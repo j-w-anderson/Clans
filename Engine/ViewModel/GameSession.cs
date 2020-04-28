@@ -113,7 +113,6 @@ namespace Engine
             Regions = GameData.GetRegions().ToObservableCollection<Region>();
             Clans = GameData.GetClans().ToObservableCollection<Clan>();
 
-
             Players.Add(new Player(this, "Cyrus"));
             Players.Add(new Player(this, "Will"));
             Players.Add(new Player(this, "Piper"));
@@ -157,16 +156,29 @@ namespace Engine
         }
         
         
-        public void ResetFlags()
-        {
-            ShowContinue = false;
-        }
-
+    
         public void NewTurn()
         {
             CurrentPlayer = Players[(CurrentPlayer_id+1) % Players.Count()];
             // Player to select Origin region
             CurrentMode = new SelectOrigin(this);
+        }
+
+        public void OnSelectRegion(int rid)
+        {
+
+            Region region = Regions.First(r => r.RID == rid);
+
+            if (CurrentMode.GetType() == typeof(SelectOrigin))
+            {
+                OnOrigin(region);
+            } else if (CurrentMode.GetType() == typeof(SelectDestination))
+            {
+                OnDestination(region);
+            } else if (CurrentMode.GetType() == typeof(SelectVillage))
+            {
+                OnVillage(region);
+            }
         }
 
         public void OnOrigin(Region origin)
@@ -239,24 +251,10 @@ namespace Engine
 
         }
         
-
-
-        public void EndTurn()
-        {
-
-            
-            
-        }
-        
-
-
-
         public ObservableCollection<Region> FindNewVillages()
         {
             return Regions.Where(r => !r.Empty && !r.Village && r.VillageCheck()).ToObservableCollection<Region>();             
         }
-
-
 
         private void EndGame()
         {

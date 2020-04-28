@@ -14,6 +14,7 @@ namespace Engine
 
         public SelectVillage(GameSession game, ObservableCollection<Region> villages) : base(game)
         {
+            Name = "SelectVillage";
             DeselectRegions();
             foreach(Region village in villages)
             {

@@ -14,6 +14,7 @@ namespace Engine
         public MODE Mode { get; set; }
         public GameSession Game { get; set; }
         public UIMode OldMode;
+        public string Name;
 
         virtual public bool ShowAddCardToLot => false;
         virtual public bool ShowStartAuction => false;
@@ -23,6 +24,7 @@ namespace Engine
 
         public UIMode(GameSession game)
         {
+            Name = "Base";
             Game = game;
         }
         

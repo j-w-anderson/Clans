@@ -151,13 +151,10 @@
                         <Button  Width="12" Height="12" 
                                  Background="White" BorderBrush="Gray" 
                                  BorderThickness="2"
-                                 Visibility="{Binding Selectable, Converter={StaticResource ButtonToVisibility}}">
-                            <TextBox Text=""
-                                     HorizontalAlignment="Center" VerticalAlignment="Center"  VerticalContentAlignment="Center"
-                                     SelectionBrush="{x:Null}" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0,-2,0,0" 
-                                     FontWeight="Bold" IsEnabled="False">
-                            </TextBox>
-                        </Button>
+                                 Visibility="{Binding Selectable, Converter={StaticResource ButtonToVisibility}}"
+                                 Click="Select_Region_Click" Tag="{Binding RID}"/>
+
+
                     </Grid>
 
                 </DataTemplate>
