@@ -11,6 +11,10 @@
     <Window.Resources>
         <local:CardColorConverter x:Key="CardColorConverter"/>
         <local:CardFontColorConverter x:Key="CardFontColorConverter"/>
+        <local:RegionXConverter x:Key="RegionXConverter"/>
+        <local:RegionYConverter x:Key="RegionYConverter"/>
+        <local:HutsIndexer x:Key="HutsIndexer"/>
+        <local:HutsGreaterThanZero x:Key="HutsGreaterThanZero"/>
         <BooleanToVisibilityConverter x:Key="ButtonToVisibility"/>
 
         <Style TargetType="Label" x:Key="CharacterCard">
@@ -44,19 +48,120 @@
         </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="1600"/>
+            <ColumnDefinition Width="1135"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ItemsControl Name="Players_IC"
-                      Grid.Column="1" Grid.Row="0">
+        <ItemsControl Name="Regions_IC" Grid.Row="0" Grid.ColumnSpan="2" Margin="186,0,4.8,0.2">
 
             <ItemsControl.Background>
                 <ImageBrush ImageSource="Images/ClansBoard.jpg" Stretch="Uniform" />
             </ItemsControl.Background>
 
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RenderTransform>
+                            <TranslateTransform X="{Binding X, Converter={StaticResource RegionXConverter}}"
+                                                Y="{Binding Y, Converter={StaticResource RegionYConverter}}"/>
+                        </Grid.RenderTransform>
+                        <Border  Width="20" Height="20" 
+                                 Background="Red" BorderBrush="Black" 
+                                 BorderThickness="2" CornerRadius="20"
+                                 Visibility="{Binding Huts0p, Converter={StaticResource ButtonToVisibility}}">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <TranslateTransform X="0" Y="-18"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <TextBox Text="{Binding Huts0,Mode=OneWay}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"  VerticalContentAlignment="Center"
+                                     SelectionBrush="{x:Null}" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0,-2,0,0" 
+                                     FontWeight="Bold">
+                            </TextBox>
+                        </Border>
+
+                        <Border  Width="20" Height="20" 
+                                 Background="Green" BorderBrush="Black" 
+                                 BorderThickness="2" CornerRadius="20"
+                                 Visibility="{Binding Huts1p, Converter={StaticResource ButtonToVisibility}}">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <TranslateTransform X="-17.1" Y="-5.6"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <TextBox Text="{Binding Huts1,Mode=OneWay}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"  VerticalContentAlignment="Center"
+                                     SelectionBrush="{x:Null}" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0,-2,0,0" 
+                                     FontWeight="Bold">
+                            </TextBox>
+                        </Border>
+                        <Border  Width="20" Height="20" 
+                                 Background="Yellow" BorderBrush="Black" 
+                                 BorderThickness="2" CornerRadius="20"
+                                 Visibility="{Binding Huts2p, Converter={StaticResource ButtonToVisibility}}">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <TranslateTransform X="-10.6" Y="14.6"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <TextBox Text="{Binding Huts2,Mode=OneWay}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"  VerticalContentAlignment="Center"
+                                     SelectionBrush="{x:Null}" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0,-2,0,0" 
+                                     FontWeight="Bold">
+                            </TextBox>
+                        </Border>
+                        <Border  Width="20" Height="20" 
+                                 Background="Purple" BorderBrush="Black"
+                                 BorderThickness="2" CornerRadius="20"
+                                 Visibility="{Binding Huts3p, Converter={StaticResource ButtonToVisibility}}">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <TranslateTransform X="10.6 " Y="14.6"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <TextBox Text="{Binding Huts3,Mode=OneWay}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"  VerticalContentAlignment="Center"
+                                     SelectionBrush="{x:Null}" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0,-2,0,0" 
+                                     FontWeight="Bold">
+                            </TextBox>
+                        </Border>
+                        <Border  Width="20" Height="20" 
+                                 Background="Cyan" BorderBrush="Black" 
+                                 BorderThickness="2" CornerRadius="20"
+                                 Visibility="{Binding Huts4p, Converter={StaticResource ButtonToVisibility}}">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <TranslateTransform X="17.1" Y="-5.6"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <TextBox Text="{Binding Huts4,Mode=OneWay}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"  VerticalContentAlignment="Center"
+                                     SelectionBrush="{x:Null}" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0,-2,0,0" 
+                                     FontWeight="Bold">
+                            </TextBox>
+                        </Border>
+                        <Button  Width="12" Height="12" 
+                                 Background="White" BorderBrush="Gray" 
+                                 BorderThickness="2"
+                                 Visibility="{Binding Selectable, Converter={StaticResource ButtonToVisibility}}">
+                            <TextBox Text=""
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"  VerticalContentAlignment="Center"
+                                     SelectionBrush="{x:Null}" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0,-2,0,0" 
+                                     FontWeight="Bold" IsEnabled="False">
+                            </TextBox>
+                        </Button>
+                    </Grid>
+
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
         </ItemsControl>
     </Grid>
 </Window>

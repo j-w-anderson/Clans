@@ -64,6 +64,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CityItemConverter.cs" />
+    <Compile Include="RegionConverters.cs" />
     <Compile Include="InfectionTrackConverter.cs" />
     <Compile Include="OutbreakCountConverter.cs" />
     <Compile Include="PanicLevelConverter.cs" />

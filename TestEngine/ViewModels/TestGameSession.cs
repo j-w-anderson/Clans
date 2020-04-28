@@ -18,6 +18,8 @@ namespace TestEngine.ViewModels
             Assert.IsTrue(gameSession.Regions.All(r => r.Huts.Sum() == 1));
         }
 
+        
+
         [TestMethod]
         public void IntialChipTest()
         {

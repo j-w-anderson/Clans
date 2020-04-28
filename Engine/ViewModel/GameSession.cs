@@ -119,11 +119,11 @@ namespace Engine
             Players.Add(new Player(this, "Piper"));
             Players.Add(new Player(this, "Bryan"));
 
-            StartGame(new Random());
         }
 
         public void StartGame(Random rng)
         {
+            DistributeHuts(rng);
             // Assign 1 clan to each player
             List<Clan> avail = Clans.ToList<Clan>();
             foreach(Player p in Players)

@@ -19,8 +19,43 @@ namespace Engine.Model
         public List<Region> Adj { get; set; } = new List<Region>();
         public ObservableCollection<int> Huts = new ObservableCollection<int> { 0, 0, 0, 0, 0 };
 
-        private bool _village=false;
 
+        public double X => Coords.X;
+        public double Y => Coords.Y;
+
+
+        // For some reason, I couldn't get xaml to bind correctly to Huts[0]
+        // This next code is my quick and dirty workaround; perhaps someday 
+        // I'll be back to clean it up.
+        public int Huts0 => Huts[0];
+        public int Huts1 => Huts[1];
+        public int Huts2 => Huts[2];
+        public int Huts3 => Huts[3];
+        public int Huts4 => Huts[4];
+
+        public bool Huts0p => Huts[0] > 0;
+        public bool Huts1p => Huts[1] > 0;
+        public bool Huts2p => Huts[2] > 0;
+        public bool Huts3p => Huts[3] > 0;
+        public bool Huts4p => Huts[4] > 0;
+
+        private void OnHutChange()
+        {
+            OnPropertyChanged(nameof(Huts0));
+            OnPropertyChanged(nameof(Huts1));
+            OnPropertyChanged(nameof(Huts2));
+            OnPropertyChanged(nameof(Huts3));
+            OnPropertyChanged(nameof(Huts4));
+            OnPropertyChanged(nameof(Huts0p));
+            OnPropertyChanged(nameof(Huts1p));
+            OnPropertyChanged(nameof(Huts2p));
+            OnPropertyChanged(nameof(Huts3p));
+            OnPropertyChanged(nameof(Huts4p));
+        }
+        // End Q&D
+
+
+        private bool _village=false;
         public bool Village
         {
             get { return _village; }
@@ -64,6 +99,7 @@ namespace Engine.Model
         {
             Huts[clan.Clan_id] += 1;
             OnPropertyChanged(nameof(Empty));
+            OnHutChange();
         }
 
         public void AddHuts(List<int> huts)
@@ -71,6 +107,7 @@ namespace Engine.Model
             Huts = (from i in Enumerable.Range(0,5)
                      select Huts.ElementAt(i) + huts.ElementAt(i)).ToObservableCollection<int>();
             OnPropertyChanged(nameof(Empty));
+            OnHutChange();
         }
 
         public void MoveTo(Region region)
@@ -78,6 +115,7 @@ namespace Engine.Model
             region.AddHuts(Huts.ToList<int>());
             Huts = new ObservableCollection<int>{ 0,0,0,0,0};
             OnPropertyChanged(nameof(Empty));
+            OnHutChange();
         }
 
         public bool IsValidOrigin()
@@ -117,7 +155,7 @@ namespace Engine.Model
 
             // Clans battle if all are present
             int tiny = Huts.Min();
-            Huts.Select(h => h - tiny);
+            Huts = Huts.Select(h => h - tiny).ToObservableCollection<int>();
 
             // Remaining clans score
             for(int cid = 0; cid < 5; cid++)

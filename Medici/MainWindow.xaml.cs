@@ -31,7 +31,7 @@ namespace Clans
 
             DataContext = gameSession;
 
-            Players_IC.ItemsSource = gameSession.Players;
+            Regions_IC.ItemsSource = gameSession.Regions;
             //Lot_IC.ItemsSource = gameSession.Lot;
             //Discards_IC.ItemsSource = gameSession.ResourceDeck.DiscardPile;
 
