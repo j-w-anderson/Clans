@@ -3,7 +3,6 @@ using Engine.Model.Roles;
 using Engine.Utils;
 using Engine.ViewModel.GameModes;
 using Microsoft.Win32;
-using PandemicLegacy;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,6 +29,7 @@ namespace Engine
         public int CurrentPhaseID = 0;
         public PHASE Phase;
         public int Step;
+
 
         private string _message;
 
@@ -106,23 +106,27 @@ namespace Engine
 
         public ObservableCollection<Card> Lot = new ObservableCollection<Card>();
 
+        public List<string> Names;
+
         public GameSession()
         {
             CurrentMode = new UIMode(this);
 
             Regions = GameData.GetRegions().ToObservableCollection<Region>();
             Clans = GameData.GetClans().ToObservableCollection<Clan>();
-
-            Players.Add(new Player(this, "Cyrus"));
-            Players.Add(new Player(this, "Will"));
-            Players.Add(new Player(this, "Piper"));
-            Players.Add(new Player(this, "Bryan"));
-
+            Names = new List<string>() { "April", "Ben", "Chico", "Dave", "Elijah" };
+            
         }
 
         public void StartGame(Random rng)
         {
             DistributeHuts(rng);
+            // Shuffle Player Order
+            Names = Shuffler.Shuffle<string>(Names, rng).ToList<string>();
+            for (int i = 0; i < Names.Count; i++)
+            {
+                Players.Add(new Player(this, i, Names[i]));
+            }
             // Assign 1 clan to each player
             List<Clan> avail = Clans.ToList<Clan>();
             foreach(Player p in Players)
@@ -131,8 +135,6 @@ namespace Engine
                 p.HiddenClan = avail[chosen];
                 avail.RemoveAt(chosen);
             }
-            // Shuffle Player Order
-            Players = Shuffler.Shuffle<Player>(Players,rng).ToObservableCollection<Player>();
             CurrentPlayer = Players.Last();
             NewTurn();
         }
@@ -160,6 +162,7 @@ namespace Engine
         public void NewTurn()
         {
             CurrentPlayer = Players[(CurrentPlayer_id+1) % Players.Count()];
+            SetActivePlayer();
             // Player to select Origin region
             CurrentMode = new SelectOrigin(this);
         }
@@ -195,20 +198,22 @@ namespace Engine
         }
 
         public void ScoreNewVillages()
-        { 
-            if (NewVillages.Count() == 0)
+        {
+            while (NewVillages.Count() > 0)
             {
-                NewTurn();
-                return;
-            } else if(NewVillages.Count()==1)
-            {
-                // Maybe should be a mode so UI can pause during scoring...
-                // probably the UI should listen for a scoring event and pause on its own?
-                ScoreVillage(NewVillages[0]);
-            } else
-            {
-                CurrentMode = new SelectVillage(this, NewVillages);
+                if (NewVillages.Count() == 1)
+                {
+                    // Maybe should be a mode so UI can pause during scoring...
+                    // probably the UI should listen for a scoring event and pause on its own?
+                    ScoreVillage(NewVillages[0]);
+                    NewVillages.RemoveAt(0);
+                }
+                else
+                {
+                    CurrentMode = new SelectVillage(this, NewVillages);
+                }
             }
+            NewTurn();
         }
 
         public void ScoreVillage(Region village)
@@ -217,11 +222,12 @@ namespace Engine
             TERRAIN barren = GameData.GetBarrenTerrain(Chips);
             int bonus = GameData.GetBonus(Chips);
             Chips -= 1;
+            CurrentPlayer.Points += 1;
 
             List<int> points = village.GetScores(boon,barren,bonus);
             for(int cid = 0; cid < 5; cid++)
             {
-                Clans[cid].Points += points[cid];
+                Clans[cid].Points += points[cid]*10;
             }
         }
 
@@ -282,6 +288,15 @@ namespace Engine
 
             }
 
+        }
+
+        public void SetActivePlayer()
+        {
+            foreach(Player p in Players)
+            {
+                p.Active = false;
+            }
+            CurrentPlayer.Active = true;
         }
 
 

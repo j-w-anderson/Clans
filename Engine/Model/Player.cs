@@ -1,6 +1,5 @@
 ﻿using Engine.Model;
 using Engine.Utils;
-using PandemicLegacy;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,9 +40,22 @@ namespace Engine
             }
         }
 
+        private int _pid;
 
-        public Player(GameSession game, string name)
+        public int PID
         {
+            get { return _pid; }
+            set
+            {
+                _pid = value;
+                OnPropertyChanged(nameof(PID));
+            }
+        }
+
+
+        public Player(GameSession game, int pid, string name)
+        {
+            PID = pid;
             Game = game;
             Name = name;
         }

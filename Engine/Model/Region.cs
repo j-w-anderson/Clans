@@ -154,9 +154,11 @@ namespace Engine.Model
             if (barren == Terrain) { return points; }
 
             // Clans battle if all are present
-            int tiny = Huts.Min();
-            Huts = Huts.Select(h => h - tiny).ToObservableCollection<int>();
-
+            if (Huts.Min() > 0)
+            {
+                Huts = Huts.Select(h => h == 1 ? 0 : h).ToObservableCollection<int>();
+                OnHutChange();
+            }
             // Remaining clans score
             for(int cid = 0; cid < 5; cid++)
             {

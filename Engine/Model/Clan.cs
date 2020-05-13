@@ -9,9 +9,20 @@ namespace Engine.Model
 {
     public class Clan: BaseNotificationClass
     {
-        public int Clan_id;
+        private int _clan_id;
 
-        private int _points=0;
+        public int Clan_id
+        {
+            get { return _clan_id; }
+            set {
+                _clan_id = value;
+                OnPropertyChanged(nameof(Clan_id));
+            }
+        }
+
+
+
+        private int _points;
 
         public int Points
         {
@@ -26,6 +37,7 @@ namespace Engine.Model
         public Clan(int clan_id)
         {
             Clan_id = clan_id;
+            Points = clan_id;
         }
     }
 }

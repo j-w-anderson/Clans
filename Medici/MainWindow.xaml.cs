@@ -33,6 +33,8 @@ namespace Clans
             DataContext = gameSession;
 
             Regions_IC.ItemsSource = gameSession.Regions;
+            Clans_IC.ItemsSource = gameSession.Clans;
+            Players_IC.ItemsSource = gameSession.Players;
             //Lot_IC.ItemsSource = gameSession.Lot;
             //Discards_IC.ItemsSource = gameSession.ResourceDeck.DiscardPile;
 
@@ -45,6 +47,14 @@ namespace Clans
             Button S = sender as Button;
             int RID = (int)S.Tag;
             gameSession.OnSelectRegion(RID);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            for (int cid = 0; cid < 5; cid++)
+            {
+                gameSession.Clans[cid].Points +=  10;
+            }
         }
     }
 }

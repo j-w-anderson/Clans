@@ -64,10 +64,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CityItemConverter.cs" />
+    <Compile Include="PlayerConvereters .cs" />
     <Compile Include="RegionConverters.cs" />
     <Compile Include="InfectionTrackConverter.cs" />
-    <Compile Include="OutbreakCountConverter.cs" />
-    <Compile Include="PanicLevelConverter.cs" />
+    <Compile Include="ChipsConverter.cs" />
+    <Compile Include="ClanConvereters.cs" />
     <Compile Include="ColorConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

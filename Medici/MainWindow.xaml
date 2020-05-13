@@ -9,12 +9,16 @@
         WindowState="Maximized"
         Height="785" Width="1500" HorizontalAlignment="Center" VerticalAlignment="Center">
     <Window.Resources>
-        <local:CardColorConverter x:Key="CardColorConverter"/>
-        <local:CardFontColorConverter x:Key="CardFontColorConverter"/>
         <local:RegionXConverter x:Key="RegionXConverter"/>
         <local:RegionYConverter x:Key="RegionYConverter"/>
         <local:HutsIndexer x:Key="HutsIndexer"/>
         <local:HutsGreaterThanZero x:Key="HutsGreaterThanZero"/>
+        <local:ChipsToVisibility x:Key="ChipsToVisibility"/>
+        <local:ChipsYConverter x:Key="ChipsYConverter"/>
+        <local:ClanColorConverter x:Key="ClanColorConverter"/>
+        <local:ClanScoreXConverter x:Key="ClanScoreXConverter"/>
+        <local:ClanScoreYConverter x:Key="ClanScoreYConverter"/>
+        <local:PlayerColorConverter x:Key="PlayerColorConverter"/>
         <BooleanToVisibilityConverter x:Key="ButtonToVisibility"/>
 
         <Style TargetType="Label" x:Key="CharacterCard">
@@ -54,8 +58,40 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ItemsControl Name="Regions_IC" Grid.Row="0" Grid.ColumnSpan="2" Margin="186,0,4.8,0.2">
+        <ItemsControl Name="Players_IC" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <Polygon Points="0,0 30,30 0,60" Fill="Lime"
+                                 Grid.Column="0" Grid.Row="0"
+                                 Grid.RowSpan="2"
+                                 Visibility="{Binding Active,Converter={StaticResource ButtonToVisibility}}"/>
+                        <Label Background="{Binding PID,Converter={StaticResource PlayerColorConverter}}" Content="{Binding Name}"
+                               FontWeight="ExtraBold" HorizontalContentAlignment="Center"
+                               Grid.Column="1" Grid.Row="0" Margin="10,2,2,0"/>
+                        <Label Background="{Binding PID,Converter={StaticResource PlayerColorConverter}}" Content="{Binding Points}"
+                               FontWeight="ExtraBold" HorizontalContentAlignment="Center"
+                               Grid.Column="1" Grid.Row="1" Margin="10,0,2,2"/>
+                    </Grid>
 
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <ItemsControl Name="Regions_IC" Grid.Row="0" Grid.Column="1">
             <ItemsControl.Background>
                 <ImageBrush ImageSource="Images/ClansBoard.jpg" Stretch="Uniform" />
             </ItemsControl.Background>
@@ -153,12 +189,113 @@
                                  BorderThickness="2"
                                  Visibility="{Binding Selectable, Converter={StaticResource ButtonToVisibility}}"
                                  Click="Select_Region_Click" Tag="{Binding RID}"/>
-
-
                     </Grid>
-
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <ItemsControl Name="Clans_IC" Grid.Column="1">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RenderTransform>
+                            <TranslateTransform X="{Binding Points, Converter={StaticResource ClanScoreXConverter}}"
+                                                Y="{Binding Points, Converter={StaticResource ClanScoreYConverter}}"/>
+                        </Grid.RenderTransform>
+                        <Rectangle Width="20" Height="20" 
+                                   Fill="{Binding Clan_id, Converter={StaticResource ClanColorConverter}}"  
+                                   Stroke="Black" StrokeThickness="1"/>
+
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Canvas Grid.Column="1" Grid.Row="0">
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=0}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=0}"/>
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=1}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=1}"/>
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=2}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=2}"/>
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=3}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=3}"/>
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=4}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=4}"/>
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=5}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=5}"/>
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=6}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=6}"/>
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=7}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=7}"/>
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=8}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=8}"/>
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=9}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=9}"/>
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=10}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=10}"/>
+            <Ellipse Width="30" Height="30" Fill="Brown" 
+                     Canvas.Left="1030" Canvas.Top="{Binding Converter={StaticResource ChipsYConverter}, ConverterParameter=11}" 
+                     Stroke="Black" StrokeThickness="2"
+                     Visibility="{Binding Chips,Converter={StaticResource ChipsToVisibility},
+                                                ConverterParameter=11}"/>
+
+            <!--
+            <Rectangle Width="20" Height="20"
+                       Canvas.Left="{Binding ClanPoints[1], Converter={StaticResource ClanScoreXConverter}, ConverterParameter=1}"
+                       Canvas.Top ="{Binding ClanPoints[1], Converter={StaticResource ClanScoreYConverter}, ConverterParameter=1}"
+                       Fill="Green"  Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Width="20" Height="20"
+                       Canvas.Left="{Binding ClanPoints[2], Converter={StaticResource ClanScoreXConverter}, ConverterParameter=2}"
+                       Canvas.Top ="{Binding ClanPoints[2], Converter={StaticResource ClanScoreYConverter}, ConverterParameter=2}"
+                       Fill="Yellow"  Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Width="20" Height="20"
+                       Canvas.Left="{Binding ClanPoints[3], Converter={StaticResource ClanScoreXConverter}, ConverterParameter=3}"
+                       Canvas.Top ="{Binding ClanPoints[3], Converter={StaticResource ClanScoreYConverter}, ConverterParameter=3}"
+                       Fill="Purple"  Stroke="Black" StrokeThickness="1"/>
+            <Rectangle Width="20" Height="20"
+                       Canvas.Left="{Binding ClanPoints[4], Converter={StaticResource ClanScoreXConverter}, ConverterParameter=4}"
+                       Canvas.Top ="{Binding ClanPoints[4], Converter={StaticResource ClanScoreYConverter}, ConverterParameter=4}"
+                       Fill="Cyan"  Stroke="Black" StrokeThickness="1"/> -->
+            <Button Content="+" Height="50" Width="50" Canvas.Left="20" Canvas.Top="20"
+                    Click="Button_Click"/>
+
+        </Canvas>
     </Grid>
 </Window>

@@ -126,7 +126,7 @@ namespace TestEngine.ViewModels
         {
             GameSession gameSession = new GameSession();
             gameSession.Regions[9].Huts = new ObservableCollection<int>() { 1, 1, 3, 1, 2 };
-            CollectionAssert.AreEqual(new List<int>() { 0, 0, 3, 0, 3 },
+            CollectionAssert.AreEqual(new List<int>() { 0, 0, 5, 0, 5 },
                 gameSession.Regions[9].GetScores(TERRAIN.LAKE, TERRAIN.LAKE, 0));
         }
     }
